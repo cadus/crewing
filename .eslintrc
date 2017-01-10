@@ -1,0 +1,57 @@
+{
+   "extends": "airbnb",
+
+   "globals": {
+      "window": true,
+      "document": true,
+   },
+
+   "rules": {
+
+      "indent": ["error", 3],          // http://eslint.org/docs/rules/indent
+      "brace-style": [                 // http://eslint.org/docs/rules/brace-style
+         "error",
+         "stroustrup",
+         { "allowSingleLine": true }
+      ],
+
+      "no-use-before-define": [        // http://eslint.org/docs/rules/no-use-before-define.html
+         "error", {
+            "functions": false,
+            "classes": false,
+         }
+      ],
+      "no-param-reassign": [           // http://eslint.org/docs/rules/no-param-reassign
+         "error", {
+            "props": false,
+         }
+      ],
+      "padded-blocks": "off",          // http://eslint.org/docs/rules/padded-blocks.html
+      "max-len": "off",                // meh
+      "consistent-return": "off",      // in some middlewares, returns are used to break out of a method
+      "new-cap": "off",                // keystone specific style
+      "array-callback-return": "off",  // conflicts with mongo
+
+      "no-multi-spaces": [
+         "warn", {
+           "exceptions": {
+             "Property": true,
+             "ImportDeclaration": true,
+             "VariableDeclarator": true,
+             "AssignmentExpression": true,
+           }
+         }
+       ],
+
+      "react/jsx-indent": ["error", 3],
+      "react/jsx-indent-props": ["error", 3],
+      "react/jsx-filename-extension": ["error", { "extensions": [".js", ".jsx"] }],
+      "react/prefer-es6-class": "off",
+      "react/forbid-prop-types": "off",
+      "react/no-unescaped-entities": "off",
+
+      "jsx-a11y/label-has-for": "off",
+      "jsx-a11y/no-static-element-interactions": "off",
+
+   }
+}
