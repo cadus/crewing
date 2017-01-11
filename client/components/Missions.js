@@ -14,6 +14,10 @@ export default React.createClass({
    },
 
    render() {
+      if (!this.props.missions.length) {
+         return <p>You're not on any missions yet.</p>;
+      }
+
       return (
          <Table>
             <thead>
