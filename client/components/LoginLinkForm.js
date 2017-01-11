@@ -18,6 +18,7 @@ export default React.createClass({
 
    onSubmit(ev) {
       ev.preventDefault();
+      this.setState({ isSubmitting: true });
       const body = new window.FormData();
       body.append('email', this.state.email);
       http.post('/api/volunteer/token', { body })
