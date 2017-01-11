@@ -94,18 +94,26 @@ exports.update = (req, res) => {
  * Update a Volunteers Token
  */
 exports.changeToken = (req, res) => {
-   const newToken = getToken();
    Volunteer.model
-      .findOne({ token: req.token })
+      .findOne({ email: req.body.email })
       .exec((err, volunteer) => {
          if (err) return res.apiError('database error', err);
          if (!volunteer) return res.apiError('not found');
 
-         volunteer.token = newToken;
+         volunteer.token = getToken();
          volunteer.save((err2) => {
             if (err2) return res.apiError('update error', err2);
-            setCookie(res, newToken);
-            res.apiResponse({ volunteer });
+
+            new Email('templates/emails/volunteer-token-changed.jade', { transport: 'mailgun' })
+               .send({
+                  name: volunteer.name.first,
+                  link: `/volunteer/${volunteer.token}`,
+                  host: `${req.protocol}://${req.get('host')}`,
+               }, {
+                  from: { name: 'cadus', email: 'crewing@cadus.org' },
+                  to: volunteer.email,
+                  subject: 'crewing account login link',
+               }, () => res.apiResponse({ success: true }));
          });
       });
 };

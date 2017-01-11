@@ -21,8 +21,8 @@ exports = module.exports = (app) => {
    app.get('/api/volunteers', keystone.middleware.api, isAdmin, api.volunteers.all);
    app.get('/api/volunteer', keystone.middleware.api, hasToken, api.volunteers.one);
    app.put('/api/volunteer', keystone.middleware.api, hasToken, api.volunteers.update);
-   app.put('/api/volunteer/token', keystone.middleware.api, hasToken, api.volunteers.changeToken);
    app.post('/api/volunteer', keystone.middleware.api, api.volunteers.create);
+   app.post('/api/volunteer/token', keystone.middleware.api, api.volunteers.changeToken);
 
    // Uploaded images should not be publicly accessible
    app.use('/uploads', hasTokenOrIsAdmin, express.static('uploads'));
