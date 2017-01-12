@@ -45,6 +45,8 @@ export default React.createClass({
    },
 
    renderForm() {
+      const toggleResend = () => this.setState({ showResendForm: true });
+
       return (
          <div>
             <h2 style={{ marginBottom: 0 }}>Welcome,</h2>
@@ -65,6 +67,9 @@ export default React.createClass({
                   {this.state.isSubmitting ? <Spinner type="inverted" /> : 'Sign Up'}
                </Button>
             </Form>
+            <footer>
+               <Button type="link" block onClick={toggleResend}>Lost the login link?</Button>
+            </footer>
          </div>
       );
    },
@@ -74,17 +79,12 @@ export default React.createClass({
          return <LoginLinkForm />;
       }
 
-      const toggleResend = () => this.setState({ showResendForm: true });
-
       return (
          <div className="box">
             <div className="inner">
                <img src="/images/logo.svg" height="50" alt="cadus crewing" />
                <hr />
                {this.state.submitted ? this.renderResult() : this.renderForm()}
-               <footer>
-                  <Button type="link" block onClick={toggleResend}>Lost the login link?</Button>
-               </footer>
             </div>
          </div>
       );
