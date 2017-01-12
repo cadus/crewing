@@ -1,6 +1,8 @@
-.env
+uploads/
+database/
 node_modules/
-npm-debug.log
+
+.env
 mongo.log
+npm-debug.log
 public/styles/styles.css
-database
