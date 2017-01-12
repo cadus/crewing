@@ -3,3 +3,4 @@ node_modules/
 npm-debug.log
 mongo.log
 public/styles/styles.css
+database

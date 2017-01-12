@@ -11,7 +11,8 @@
   },
   "scripts": {
     "start": "node index.js",
-    "mongo": "mongod --fork --dbpath database --logpath mongo.log",
+    "debug": "node --inspect index.js",
+    "mongo": "mkdir -p database; mongod --fork --dbpath database --logpath mongo.log",
     "lint": "eslint .",
     "lint:fix": "eslint . --fix"
   },
