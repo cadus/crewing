@@ -1,6 +1,7 @@
 const keystone = require('keystone');
 const utils = require('keystone-utils');
 const Email = require('keystone-email');
+const mailConfig = require('../../config').mail;
 
 const Volunteer = keystone.list('Volunteer');
 const Mission = keystone.list('Mission');
@@ -60,15 +61,16 @@ exports.create = (req, res) => {
    volunteer.getUpdateHandler(req).process(req.body, (err) => {
       if (err) return res.apiError('error', err);
 
-      new Email('templates/emails/volunteer-created.jade', { transport: 'mailgun' })
+      new Email('templates/emails/volunteer-created.jade', { transport: 'nodemailer' })
          .send({
             name: volunteer.name.first,
             link: `/volunteer/${volunteer.token}`,
             host: `${req.protocol}://${req.get('host')}`,
          }, {
-            from: { name: 'cadus', email: 'crewing@cadus.org' },
+            from: mailConfig.sender,
             to: volunteer.email,
             subject: 'crewing account created',
+            nodemailerConfig: mailConfig.nodemailerConfig,
          }, () => res.apiResponse({ success: true }));
    });
 };
@@ -104,15 +106,16 @@ exports.changeToken = (req, res) => {
          volunteer.save((err2) => {
             if (err2) return res.apiError('update error', err2);
 
-            new Email('templates/emails/volunteer-token-changed.jade', { transport: 'mailgun' })
+            new Email('templates/emails/volunteer-token-changed.jade', { transport: 'nodemailer' })
                .send({
                   name: volunteer.name.first,
                   link: `/volunteer/${volunteer.token}`,
                   host: `${req.protocol}://${req.get('host')}`,
                }, {
-                  from: { name: 'cadus', email: 'crewing@cadus.org' },
+                  from: mailConfig.sender,
                   to: volunteer.email,
                   subject: 'crewing account login link',
+                  nodemailerConfig: mailConfig.nodemailerConfig,
                }, () => res.apiResponse({ success: true }));
          });
       });
