@@ -2,6 +2,15 @@ import React from 'react';
 import _ from 'lodash';
 import { Button, Form, FormRow, FormField, FormInput, FormSelect, FileUpload, Checkbox, Alert } from 'elemental';
 import * as http from '../lib/http';
+import questions from '../../shared/questions.json';
+
+const groups = [
+  { value: 'medic', label: 'Medic' },
+  { value: 'helper', label: 'Helper' },
+  { value: 'captain', label: 'Captain' },
+  { value: 'journalist', label: 'Journalist' },
+  { value: 'photographer', label: 'Photographer' },
+];
 
 export default React.createClass({
 
@@ -53,13 +62,6 @@ export default React.createClass({
    },
 
    render() {
-      const groups = [
-        { value: 'medic', label: 'Medic' },
-        { value: 'helper', label: 'Helper' },
-        { value: 'captain', label: 'Captain' },
-        { value: 'journalist', label: 'Journalist' },
-        { value: 'photographer', label: 'Photographer' },
-      ];
 
       const state = Object.assign({}, this.props.volunteer, this.state);
 
@@ -104,7 +106,27 @@ export default React.createClass({
                <FormField>
                   <FileUpload name="passport" buttonLabelInitial="Upload Scan of Passport" buttonLabelChange="Change Scan of Passport" file={state.passport} />
                </FormField>
+
                <hr />
+
+               <h3>Questions</h3>
+               {_.map(questions['Questions'], (value, key) =>
+                  <FormField label={value} key={key}>
+                     <FormInput name={key} type="text" required defaultValue={state[key]} />
+                  </FormField>
+               )}
+
+               <h3>Personal environment</h3>
+               <p>Your experiences during a mission can best be processed if you have a stable and supporting personal environment. If in your current life situation everything is upheaval, this might not be the right time for a mission.</p>
+
+               {_.map(questions['Personal environment'], (value, key) =>
+                  <FormField label={value} key={key}>
+                     <FormInput name={key} type="text" required defaultValue={state[key]} />
+                  </FormField>
+               )}
+
+               <hr />
+
                <Button type="primary" onClick={this.onSubmit}>Save Data</Button>
             </Form>
          </div>

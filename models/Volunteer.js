@@ -1,6 +1,8 @@
 const keystone = require('keystone');
 const utils = require('keystone-utils');
 const transform = require('model-transform');
+const _ = require('lodash');
+const questions = require('../shared/questions.json');
 
 const Types = keystone.Field.Types;
 
@@ -53,6 +55,14 @@ Volunteer.add(
       token: { type: String },
    }
 );
+
+_.each(questions, (content, name) => {
+   const obj = {};
+   _.each(content, (value, key) => {
+      obj[key] = { type: String, label: value };
+   });
+   Volunteer.add(name, obj);
+});
 
 Volunteer.schema.virtual('url').get(function () {
    return `/volunteer/${this.token}`;
