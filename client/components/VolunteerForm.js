@@ -83,7 +83,7 @@ export default React.createClass({
                   <FormInput name="email" type="email" required defaultValue={state.email} />
                </FormField>
                <FormField>
-                  <FileUpload name="photo" buttonLabelInitial="Upload Photo" buttonLabelChange="Change Photo" file={state.photo} />
+                  <FileUpload name="photo" buttonLabelInitial="Upload a photo of you" buttonLabelChange="Change your photo" file={state.photo} />
                </FormField>
                <FormRow>
                   <FormField label="Available From" width="one-half">
@@ -103,9 +103,36 @@ export default React.createClass({
                   <Checkbox name="lifeguard" label="Lifeguard" defaultChecked={state.lifeguard} />
                   <Checkbox name="experienceOnSea" label="Experience on Sea" defaultChecked={state.experienceOnSea} />
                </FormField>
-               <FormField>
-                  <FileUpload name="passport" buttonLabelInitial="Upload Scan of Passport" buttonLabelChange="Change Scan of Passport" file={state.passport} />
-               </FormField>
+
+               <FormRow>
+                  <FormField width="one-half">
+                     <FileUpload
+                        name="passport"
+                        buttonLabelInitial="Upload a scan of your passport"
+                        buttonLabelChange="Change the scan of your passport"
+                        file={state.passport} />
+                  </FormField>
+
+                  {this.state.group === 'journalist' &&
+                     <FormField width="one-half">
+                        <FileUpload
+                           name="presscard"
+                           buttonLabelInitial="Upload a scan of your presscard"
+                           buttonLabelChange="Change the scan of your presscard"
+                           file={state.presscard} />
+                     </FormField>
+                  }
+
+                  {this.state.group === 'medic' &&
+                     <FormField width="one-half">
+                        <FileUpload
+                           name="approbation"
+                           buttonLabelInitial="Upload a scan of your approbation"
+                           buttonLabelChange="Change the scan of your approbation"
+                           file={state.approbation} />
+                     </FormField>
+                  }
+               </FormRow>
 
                <hr />
 
