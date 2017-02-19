@@ -12,6 +12,13 @@ const groups = [
   { value: 'photographer', label: 'Photographer' },
 ];
 
+const boatDriverPermits = [
+   { value: '', label: 'none' },
+   { value: 'class1', label: 'Class 1' },
+   { value: 'class2', label: 'Class 2' },
+   { value: 'class3', label: 'Class 3' },
+];
+
 export default React.createClass({
 
    propTypes: {
@@ -79,12 +86,29 @@ export default React.createClass({
                      <FormInput name="name.last" type="text" required defaultValue={state.name.last} />
                   </FormField>
                </FormRow>
-               <FormField label="Email address">
-                  <FormInput name="email" type="email" required defaultValue={state.email} />
-               </FormField>
+
+               <FormRow>
+                  <FormField label="Email address" width="one-half">
+                     <FormInput name="email" type="email" required defaultValue={state.email} />
+                  </FormField>
+                  <FormField label="Phone number" width="one-half">
+                     <FormInput name="phone" type="text" required defaultValue={state.phone} />
+                  </FormField>
+               </FormRow>
+
+               <FormRow>
+                  <FormField label="Address" width="one-half">
+                     <FormInput name="address" type="text" multiline required defaultValue={state.address} />
+                  </FormField>
+                  <FormField label="Notes" width="one-half">
+                     <FormInput name="notes" type="text" multiline required defaultValue={state.notes} />
+                  </FormField>
+               </FormRow>
+
                <FormField>
                   <FileUpload name="photo" buttonLabelInitial="Upload a photo of you" buttonLabelChange="Change your photo" file={state.photo} />
                </FormField>
+
                <FormRow>
                   <FormField label="Available From" width="one-half">
                      <FormInput name="availableFrom" type="date" defaultValue={this.formatDate(state.availableFrom)} />
@@ -93,9 +117,16 @@ export default React.createClass({
                      <FormInput name="availableTill" type="date" defaultValue={this.formatDate(state.availableTill)} />
                   </FormField>
                </FormRow>
-               <FormField label="Group">
-                  <FormSelect name="group" options={groups} defaultValue={state.group} onChange={_.noop} />
-               </FormField>
+
+               <FormRow>
+                  <FormField label="Group" width="one-half">
+                     <FormSelect name="group" options={groups} defaultValue={state.group} onChange={_.noop} />
+                  </FormField>
+                  <FormField label="Boat Driver Permit" width="one-half">
+                     <FormSelect name="boatDriverPermit" options={boatDriverPermits} defaultValue={state.boatDriverPermit} onChange={_.noop} />
+                  </FormField>
+               </FormRow>
+
                <FormField>
                   <Checkbox name="paramedic" label="Paramedic" defaultChecked={state.paramedic} />
                   <Checkbox name="doctor" label="Doctor" defaultChecked={state.doctor} />

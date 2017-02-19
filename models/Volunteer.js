@@ -47,12 +47,6 @@ Volunteer.add(
       passport: { type: Types.File, storage },
       presscard: { type: Types.File, storage, dependsOn: { group: 'journalist' } },
       approbation: { type: Types.File, storage, dependsOn: { group: 'medic' } },
-   },
-   'Permissions',
-   {
-      dataPrivacy: { type: Boolean, indent: true, initial: true, required: true, label: 'Accepted the data privacy conditions' },
-      isVerified: { type: Boolean, indent: true, label: 'Has a verified email address' },
-      token: { type: String },
    }
 );
 
@@ -62,6 +56,12 @@ _.each(questions, (content, name) => {
       obj[key] = { type: String, label: value };
    });
    Volunteer.add(name, obj);
+});
+
+Volunteer.add('Permissions', {
+   dataPrivacy: { type: Boolean, indent: true, initial: true, required: true, label: 'Accepted the data privacy conditions' },
+   isVerified: { type: Boolean, indent: true, label: 'Has a verified email address' },
+   token: { type: String },
 });
 
 Volunteer.schema.virtual('url').get(function () {
