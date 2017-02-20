@@ -82,6 +82,11 @@ Volunteer.schema.methods.verifyEmail = function () {
    this.save();
 };
 
+Volunteer.schema.methods.hasFile = function (filename) {
+   return ['photo', 'passport', 'presscard', 'approbation']
+      .some(name => this[name] && this[name].filename === filename);
+};
+
 
 Volunteer.schema.pre('save', function (next) {
    if (this.isNew) {

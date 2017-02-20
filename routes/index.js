@@ -6,6 +6,7 @@ const cookieParser = require('cookie-parser');
 
 const importRoutes = keystone.importer(__dirname);
 const api = importRoutes('./api');
+const Volunteer = keystone.list('Volunteer');
 
 const commonPackages = ['react', 'react-dom', 'elemental', 'whatwg-fetch'];
 
@@ -25,7 +26,7 @@ exports = module.exports = (app) => {
    app.post('/api/volunteer/token', keystone.middleware.api, api.volunteers.changeToken);
 
    // Uploaded images should not be publicly accessible
-   app.use('/uploads', hasTokenOrIsAdmin, express.static('uploads'));
+   app.use('/uploads/:filename', isAdminOrOwner, express.static('uploads'));
 
    // Bundle common packages
    app.get('/js/packages.js', browserify(commonPackages, { cache: true, precompile: true }));
@@ -54,9 +55,19 @@ function isAdmin(req, res, next) {
    next();
 }
 
-function hasTokenOrIsAdmin(req, res, next) {
-   if (!req.user && !req.signedCookies.volunteer) { // TODO should only allow owner not all (alleged) volunteers
-      return res.sendStatus(403); // forbidden
-   }
-   next();
+function isAdminOrOwner(req, res, next) {
+   const token = req.signedCookies.volunteer;
+   const filename = req.params.filename;
+   const nope = () => res.sendStatus(403); // forbidden
+
+   if (req.user) return next();
+   if (!token) return nope();
+
+   Volunteer.model
+      .findOne({ token })
+      .exec((err, volunteer) => {
+         if (err || !volunteer) return nope();
+         if (volunteer.hasFile(filename)) return next();
+         nope();
+      });
 }
