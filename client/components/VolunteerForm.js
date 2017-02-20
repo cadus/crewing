@@ -1,6 +1,6 @@
 import React from 'react';
 import _ from 'lodash';
-import { Button, Form, FormRow, FormField, FormInput, FormSelect, FileUpload, Checkbox, Alert } from 'elemental';
+import { Button, Form, FormRow, FormField, FormInput, FormSelect, FileUpload, Checkbox, Alert, Spinner } from 'elemental';
 import * as http from '../lib/http';
 import questions from '../../shared/questions.json';
 
@@ -34,6 +34,7 @@ export default React.createClass({
    getInitialState() {
       return {
          message: null,
+         isSubmitting: false,
       };
    },
 
@@ -50,10 +51,14 @@ export default React.createClass({
    },
 
    onSubmit() {
+      this.setState({ isSubmitting: true });
       const body = new window.FormData();
       _.each(this.state, (value, key) => body.append(key, value));
       http.put('/api/volunteer', { body })
-         .then(() => this.setMessage('Changes were saved.', 'success'))
+         .then(() => {
+            this.setState({ isSubmitting: false });
+            this.setMessage('Changes were saved.', 'success');
+         })
          .catch(error => this.setMessage(error.message, 'danger'));
    },
 
@@ -198,7 +203,9 @@ export default React.createClass({
 
                <hr />
 
-               <Button type="primary" onClick={this.onSubmit}>Save Data</Button>
+               <Button type="primary" onClick={this.onSubmit}>
+                  Save Data {this.state.isSubmitting && <Spinner type="inverted" />}
+               </Button>
             </Form>
          </div>
       );
