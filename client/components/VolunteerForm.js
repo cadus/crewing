@@ -84,10 +84,10 @@ export default React.createClass({
             }
             <Form onChange={this.onChange}>
                <FormRow>
-                  <FormField label="Firstname" width="one-half">
+                  <FormField label="First name" width="one-half">
                      <FormInput name="name.first" type="text" required defaultValue={state.name.first} />
                   </FormField>
-                  <FormField label="Lastname" width="one-half">
+                  <FormField label="Last name" width="one-half">
                      <FormInput name="name.last" type="text" required defaultValue={state.name.last} />
                   </FormField>
                </FormRow>
@@ -128,10 +128,10 @@ export default React.createClass({
                </FormField>
 
                <FormRow>
-                  <FormField label="Available From" width="one-half">
+                  <FormField label="Available from" width="one-half">
                      <FormInput name="availableFrom" type="date" defaultValue={this.formatDate(state.availableFrom)} />
                   </FormField>
-                  <FormField label="Available Till" width="one-half">
+                  <FormField label="Available till" width="one-half">
                      <FormInput name="availableTill" type="date" defaultValue={this.formatDate(state.availableTill)} />
                   </FormField>
                </FormRow>

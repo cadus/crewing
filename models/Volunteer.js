@@ -67,6 +67,7 @@ Volunteer.add('Permissions', {
    token: { type: String },
 });
 
+
 Volunteer.schema.virtual('url').get(function () {
    return `/volunteer/${this.token}`;
 });
