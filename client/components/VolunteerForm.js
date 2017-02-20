@@ -97,6 +97,19 @@ export default React.createClass({
                </FormRow>
 
                <FormRow>
+                  <FormField label="Emergency Contacts" width="one-half">
+                     <FormInput name="emergencyContacts" type="text" required defaultValue={state.emergencyContacts} />
+                  </FormField>
+                  <FormField label="Languages" width="one-half">
+                     <FormInput name="languages" type="text" required defaultValue={state.languages} />
+                  </FormField>
+               </FormRow>
+
+               <FormField label="Medication">
+                  <FormInput name="medication" type="text" required defaultValue={state.medication} />
+               </FormField>
+
+               <FormRow>
                   <FormField label="Address" width="one-half">
                      <FormInput name="address" type="text" multiline required defaultValue={state.address} />
                   </FormField>
