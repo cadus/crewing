@@ -1,7 +1,9 @@
 import React from 'react';
 import _ from 'lodash';
 import { Button, Form, FormRow, FormField, FormInput, FormSelect, FileUpload, Checkbox, Alert, Spinner } from 'elemental';
+import AvailabilitiesForm from './AvailabilitiesForm';
 import * as http from '../lib/http';
+import formData from '../lib/formData';
 import questions from '../../shared/questions.json';
 
 const groups = [
@@ -52,8 +54,10 @@ export default React.createClass({
 
    onSubmit() {
       this.setState({ isSubmitting: true });
-      const body = new window.FormData();
-      _.each(this.state, (value, key) => body.append(key, value));
+
+      const values = _.omit(this.state, _.keys(this.getInitialState()));
+      const body = formData(values);
+
       http.put('/api/volunteer', { body })
          .then(() => {
             this.setState({ isSubmitting: false });
@@ -62,19 +66,16 @@ export default React.createClass({
          .catch(error => this.setMessage(error.message, 'danger'));
    },
 
+   setAvailabilities(availabilities) {
+      this.setState({ availabilities });
+   },
+
    setMessage(text, type) {
       this.setState({ message: { text, type } });
       _.delay(() => this.setState({ message: null }), 3000);
    },
 
-   formatDate(isoDateString) {
-      const date = new Date(isoDateString);
-      const month = (date.getMonth() > 8 ? '' : '0') + (date.getMonth() + 1);
-      return `${date.getFullYear()}-${month}-${date.getDate()}`; // 2016-12-23
-   },
-
    render() {
-
       const state = Object.assign({}, this.props.volunteer, this.state);
 
       return (
@@ -127,14 +128,15 @@ export default React.createClass({
                   <FileUpload name="photo" buttonLabelInitial="Upload a photo of you" buttonLabelChange="Change your photo" file={state.photo} />
                </FormField>
 
-               <FormRow>
-                  <FormField label="Available from" width="one-half">
-                     <FormInput name="availableFrom" type="date" defaultValue={this.formatDate(state.availableFrom)} />
-                  </FormField>
-                  <FormField label="Available till" width="one-half">
-                     <FormInput name="availableTill" type="date" defaultValue={this.formatDate(state.availableTill)} />
-                  </FormField>
-               </FormRow>
+               <hr />
+
+               <h3>Availabilities</h3>
+
+               <AvailabilitiesForm availabilities={state.availabilities} onChange={this.setAvailabilities} />
+
+               <hr />
+
+               <h3>Qualification</h3>
 
                <FormRow>
                   <FormField label="Group" width="one-half">
@@ -186,6 +188,7 @@ export default React.createClass({
                <hr />
 
                <h3>Questions</h3>
+
                {_.map(questions['Questions'], (value, key) =>
                   <FormField label={value} key={key}>
                      <FormInput name={key} type="text" required defaultValue={state[key]} />
@@ -193,6 +196,7 @@ export default React.createClass({
                )}
 
                <h3>Personal environment</h3>
+
                <p>Your experiences during a mission can best be processed if you have a stable and supporting personal environment. If in your current life situation everything is upheaval, this might not be the right time for a mission.</p>
 
                {_.map(questions['Personal environment'], (value, key) =>
