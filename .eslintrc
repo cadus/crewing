@@ -26,6 +26,10 @@
             "props": false,
          }
       ],
+      "no-underscore-dangle": [      // http://eslint.org/docs/rules/no-underscore-dangle
+        "error",
+        { "allow": ["_id"] }
+      ],
       "padded-blocks": "off",          // http://eslint.org/docs/rules/padded-blocks.html
       "max-len": "off",                // meh
       "consistent-return": "off",      // in some middlewares, returns are used to break out of a method
