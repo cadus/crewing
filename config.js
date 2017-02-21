@@ -20,7 +20,7 @@ exports.locals = {
 };
 
 exports.nav = {
-   crewing: ['volunteers', 'missions', 'boats'],
+   crewing: ['volunteers', 'missions', 'projects', 'areas'],
    users: ['users'],
 };
 

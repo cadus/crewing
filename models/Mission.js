@@ -12,7 +12,8 @@ Mission.add({
    start: { type: Types.Date, default: Date.now },
    end: { type: Types.Date, default: Date.now },
    crew: { type: Types.Relationship, ref: 'Volunteer', many: true },
-   boat: { type: Types.Relationship, ref: 'Boat' },
+   project: { type: Types.Relationship, ref: 'Project' },
+   area: { type: Types.Relationship, ref: 'Area' },
    createdAt: { type: Types.Datetime, default: Date.now },
    updatedAt: { type: Types.Datetime, default: Date.now },
 });
