@@ -25,7 +25,7 @@ exports.nav = {
 };
 
 exports.mail = {
-   sender: 'crewing@tawian.org', // { name: 'cadus', email: 'crewing@cadus.org' }
+   sender: { name: 'cadus crewing', email: 'crewing@tawian.org' },
    nodemailerConfig: {
       host: process.env.MAIL_HOST,
       port: process.env.MAIL_PORT || 465,
