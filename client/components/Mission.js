@@ -29,7 +29,7 @@ export default React.createClass({
          const location = this.props.mission.area.location;
          const fields = ['country', 'postcode', 'state', 'street1'];
          const query = _.map(_.pick(location, fields), part => part ? part.replace(/\s/g, '+') : '').join(',+');
-         const url = `http://nominatim.openstreetmap.org/search?q=${query}&format=json`;
+         const url = `https://nominatim.openstreetmap.org/search?q=${query}&format=json`;
          fetch(url).then(response => response.json()).then((result) => {
             const first = _.first(result) || {};
             const position = [+first.lat, +first.lon];
@@ -53,7 +53,7 @@ export default React.createClass({
             </div>
             {position &&
                <Map center={position} zoom={this.state.zoom}>
-                  <TileLayer url="http://{s}.tile.osm.org/{z}/{x}/{y}.png" />
+                  <TileLayer url="https://{s}.tile.osm.org/{z}/{x}/{y}.png" />
                </Map>
             }
          </div>
