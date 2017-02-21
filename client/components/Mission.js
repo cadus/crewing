@@ -53,7 +53,7 @@ export default React.createClass({
             </div>
             {position &&
                <Map center={position} zoom={this.state.zoom}>
-                  <TileLayer url="https://{s}.tile.osm.org/{z}/{x}/{y}.png" />
+                  <TileLayer url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" />
                </Map>
             }
          </div>
