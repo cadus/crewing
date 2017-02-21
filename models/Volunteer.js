@@ -61,7 +61,7 @@ Volunteer.add(
 _.each(questions, (content, name) => {
    const obj = {};
    _.each(content, (value, key) => {
-      obj[key] = { type: String, label: value };
+      obj[key] = { type: String, note: value, label: _.capitalize(key.slice(2)) };
    });
    Volunteer.add(name, obj);
 });
