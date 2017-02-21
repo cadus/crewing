@@ -12,6 +12,7 @@ const commonPackages = ['react', 'react-dom', 'elemental', 'whatwg-fetch'];
 
 // Setup Route Bindings
 exports = module.exports = (app) => {
+   app.enable('trust proxy');
    app.use(cookieParser());
 
    app.get('/', (req, res) => res.render('react', { page: 'signup' }));
