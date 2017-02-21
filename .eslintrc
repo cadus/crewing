@@ -4,6 +4,7 @@
    "globals": {
       "window": true,
       "document": true,
+      "fetch": true,
    },
 
    "rules": {

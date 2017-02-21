@@ -1,5 +1,7 @@
 import React from 'react';
-import { Table } from 'elemental';
+import _ from 'lodash';
+import { Card } from 'elemental';
+import Mission from './Mission';
 
 export default React.createClass({
 
@@ -13,32 +15,31 @@ export default React.createClass({
       };
    },
 
+   getInitialState() {
+      const missions = this.props.missions;
+
+      // coordinates come in in wrong direction, so we have to reverse them
+      _.each(missions, (mission) => {
+         const location = mission.area.location;
+         location.geo = location.geo ? _.reverse(location.geo) : null;
+      });
+
+      return { missions };
+   },
+
    render() {
-      if (!this.props.missions.length) {
+      if (!this.state.missions.length) {
          return <p>You're not on any missions yet.</p>;
       }
 
       return (
-         <Table>
-            <thead>
-               <tr>
-                  <th>Name</th>
-                  <th>Start</th>
-                  <th>End</th>
-                  <th>Status</th>
-               </tr>
-            </thead>
-            <tbody>
-               {this.props.missions.map(mission =>
-                  <tr key={mission.id}>
-                     <td>{mission.name}</td>
-                     <td>{mission.start}</td>
-                     <td>{mission.end}</td>
-                     <td>{mission.status}</td>
-                  </tr>
-               )}
-            </tbody>
-         </Table>
+         <div>
+            {_.map(this.state.missions, (mission, i) =>
+               <Card key={i}>
+                  <Mission mission={mission} />
+               </Card>
+            )}
+         </div>
       );
    },
 

@@ -43,8 +43,10 @@ exports.one = (req, res) => {
 
          Mission.model
             .find({ crew: volunteer })
-            .select('name status start end')
+            .select('name status start end crew area')
             .sort('-start')
+            .populate('crew', 'name')
+            .populate('area')
             .exec((err2, missions) => {
                if (err2) return res.apiError('database error', err);
                res.apiResponse({ volunteer, missions });

@@ -1,6 +1,7 @@
 import React from 'react';
 import _ from 'lodash';
 import { Button, FormRow, FormField, FormInput, InputGroup } from 'elemental';
+import formatDate from '../lib/formatDate';
 
 export default React.createClass({
 
@@ -42,13 +43,6 @@ export default React.createClass({
 
    notifyParent() {
       this.props.onChange(this.state.availabilities);
-   },
-
-   formatDate(isoDateString) {
-      const date = new Date(isoDateString);
-      const month = (date.getMonth() > 8 ? '' : '0') + (date.getMonth() + 1);
-      const day = (date.getDate() > 9 ? '' : '0') + date.getDate();
-      return `${date.getFullYear()}-${month}-${day}`; // 2016-12-23
    },
 
    render() {
