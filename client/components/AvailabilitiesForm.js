@@ -60,13 +60,13 @@ export default React.createClass({
             {_.map(this.state.availabilities, availability =>
                <InputGroup key={availability._id} onChange={bindOnChange(availability._id)}>
                   <InputGroup.Section grow>
-                     <FormInput name="from" type="date" defaultValue={this.formatDate(availability.from)} />
+                     <FormInput name="from" type="date" defaultValue={formatDate(availability.from)} />
                   </InputGroup.Section>
                   <InputGroup.Section grow>
-                     <FormInput name="till" type="date" defaultValue={this.formatDate(availability.till)} />
+                     <FormInput name="till" type="date" defaultValue={formatDate(availability.till)} />
                   </InputGroup.Section>
                   <InputGroup.Section grow>
-                     <FormInput name="confirmationTill" type="date" defaultValue={this.formatDate(availability.confirmationTill)} />
+                     <FormInput name="confirmationTill" type="date" defaultValue={formatDate(availability.confirmationTill)} />
                   </InputGroup.Section>
                   <InputGroup.Section>
                      <Button type="default" onClick={bindRemove(availability._id)}>Remove</Button>
