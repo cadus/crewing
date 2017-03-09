@@ -42,7 +42,7 @@ Volunteer.add(
    },
    'Group & Qualification',
    {
-      group: { type: Types.Select, options: 'helper, medic, captain, journalist, photographer', default: 'helper' },
+      group: { type: Types.Select, options: 'captain, helper, journalist, medic, photographer, technician', default: 'helper' },
       paramedic: { type: Boolean, indent: true },
       doctor: { type: Boolean, indent: true },
       emergencydoctor: { type: Boolean, indent: true },
