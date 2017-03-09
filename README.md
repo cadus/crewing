@@ -37,6 +37,17 @@ npm install
 pm2 start index.js --name "crewing"
 ```
 
+You might need to adjust the firewall (iptable rules)
+
+```
+# http
+iptables -A INPUT -p tcp --dport 80 -j ACCEPT
+# https
+iptables -A INPUT -p tcp --dport 443 -j ACCEPT
+# mail / smtp
+iptables -A OUTPUT -p tcp --dport 465 -j ACCEPT
+```
+
 
 ## Backup and restore the database
 
