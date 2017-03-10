@@ -1,9 +1,10 @@
 import React from 'react';
 import _ from 'lodash';
 import { Button, Form, FormRow, FormField, FormInput, FormSelect, FileUpload, Checkbox, Alert, Spinner } from 'elemental';
-import AvailabilitiesForm from './AvailabilitiesForm';
+import ListEditor from './ListEditor';
 import * as http from '../lib/http';
 import formData from '../lib/formData';
+import formatDate from '../lib/formatDate';
 import questions from '../../shared/questions.json';
 
 const groups = [
@@ -21,6 +22,11 @@ const boatDriverPermits = [
    { value: 'Class 2', label: 'Class 2' },
    { value: 'Class 3', label: 'Class 3' },
 ];
+
+const availabilityFields = ['from', 'till', 'confirmationTill']
+   .map(name => ({ name, type: 'date', formatter: formatDate }));
+
+const workExperienceFields = ['employer', 'role', 'time', 'location'].map(name => ({ name }));
 
 export default React.createClass({
 
@@ -68,7 +74,12 @@ export default React.createClass({
    },
 
    setAvailabilities(availabilities) {
+      console.log('setAvailabilities', availabilities);
       this.setState({ availabilities });
+   },
+
+   setWorkExperience(workExperience) {
+      this.setState({ workExperience });
    },
 
    setMessage(text, type) {
@@ -133,7 +144,12 @@ export default React.createClass({
 
                <h3>Availabilities</h3>
 
-               <AvailabilitiesForm availabilities={state.availabilities} onChange={this.setAvailabilities} />
+               <ListEditor
+                  headings={['Available from', 'Available till', 'Confirmation till']}
+                  fields={availabilityFields}
+                  values={state.availabilities}
+                  onChange={this.setAvailabilities}
+               />
 
                <hr />
 
@@ -162,7 +178,8 @@ export default React.createClass({
                         name="passport"
                         buttonLabelInitial="Upload a scan of your passport"
                         buttonLabelChange="Change the scan of your passport"
-                        file={state.passport} />
+                        file={state.passport}
+                     />
                   </FormField>
 
                   {this.state.group === 'journalist' &&
@@ -171,7 +188,8 @@ export default React.createClass({
                            name="presscard"
                            buttonLabelInitial="Upload a scan of your presscard"
                            buttonLabelChange="Change the scan of your presscard"
-                           file={state.presscard} />
+                           file={state.presscard}
+                        />
                      </FormField>
                   }
 
@@ -181,10 +199,22 @@ export default React.createClass({
                            name="approbation"
                            buttonLabelInitial="Upload a scan of your approbation"
                            buttonLabelChange="Change the scan of your approbation"
-                           file={state.approbation} />
+                           file={state.approbation}
+                        />
                      </FormField>
                   }
                </FormRow>
+
+               <hr />
+
+               <h3>Work Experience</h3>
+
+               <ListEditor
+                  headings={['Name of employer', 'Title / role', 'Dates worked', 'Location']}
+                  fields={workExperienceFields}
+                  values={state.workExperience}
+                  onChange={this.setWorkExperience}
+               />
 
                <hr />
 

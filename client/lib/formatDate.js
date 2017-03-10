@@ -1,4 +1,6 @@
 export default function (isoDateString) {
+   if (!isoDateString) return '';
+
    const date = new Date(isoDateString);
    const month = (date.getMonth() > 8 ? '' : '0') + (date.getMonth() + 1);
    const day = (date.getDate() > 9 ? '' : '0') + date.getDate();
