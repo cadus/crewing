@@ -17,9 +17,9 @@ const groups = [
 
 const boatDriverPermits = [
    { value: '', label: 'none' },
-   { value: 'class1', label: 'Class 1' },
-   { value: 'class2', label: 'Class 2' },
-   { value: 'class3', label: 'Class 3' },
+   { value: 'Class 1', label: 'Class 1' },
+   { value: 'Class 2', label: 'Class 2' },
+   { value: 'Class 3', label: 'Class 3' },
 ];
 
 export default React.createClass({
