@@ -9,7 +9,7 @@ Area.add({
    location: { type: Types.Location },
 });
 
-Area.relationship({ ref: 'Mission', path: 'missions', refPath: 'Area' });
+Area.relationship({ ref: 'Mission', path: 'missions', refPath: 'area' });
 
 transform.toJSON(Area);
 

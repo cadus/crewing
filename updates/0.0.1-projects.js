@@ -1,5 +1,5 @@
 exports.create = {
    Project: [
-      { name: 'Test-Mission' },
+      { name: 'Test-Project' },
    ],
 };

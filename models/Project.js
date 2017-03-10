@@ -7,7 +7,7 @@ Project.add({
    name: { type: String, initial: true, required: true, index: true },
 });
 
-Project.relationship({ ref: 'Mission', path: 'missions', refPath: 'Project' });
+Project.relationship({ ref: 'Mission', path: 'missions', refPath: 'project' });
 
 transform.toJSON(Project);
 
