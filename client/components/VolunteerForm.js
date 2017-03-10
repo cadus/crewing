@@ -7,11 +7,12 @@ import formData from '../lib/formData';
 import questions from '../../shared/questions.json';
 
 const groups = [
-  { value: 'medic', label: 'Medic' },
-  { value: 'helper', label: 'Helper' },
   { value: 'captain', label: 'Captain' },
+  { value: 'helper', label: 'Helper' },
   { value: 'journalist', label: 'Journalist' },
+  { value: 'medic', label: 'Medic' },
   { value: 'photographer', label: 'Photographer' },
+  { value: 'technician', label: 'Technician' },
 ];
 
 const boatDriverPermits = [
