@@ -6,15 +6,9 @@ import * as http from '../lib/http';
 import formData from '../lib/formData';
 import formatDate from '../lib/formatDate';
 import questions from '../../shared/questions.json';
+import groupsJSON from '../../shared/groups.json';
 
-const groups = [
-  { value: 'captain', label: 'Captain' },
-  { value: 'helper', label: 'Helper' },
-  { value: 'journalist', label: 'Journalist' },
-  { value: 'medic', label: 'Medic' },
-  { value: 'photographer', label: 'Photographer' },
-  { value: 'technician', label: 'Technician' },
-];
+const groups = groupsJSON.map(name => ({ value: name, label: _.startCase(name) }));
 
 const boatDriverPermits = [
    { value: '', label: 'none' },

@@ -3,6 +3,7 @@ const utils = require('keystone-utils');
 const transform = require('model-transform');
 const _ = require('lodash');
 const questions = require('../shared/questions.json');
+const groups = require('../shared/groups.json');
 
 const Types = keystone.Field.Types;
 
@@ -42,7 +43,7 @@ Volunteer.add(
    },
    'Group & Qualification',
    {
-      group: { type: Types.Select, options: 'captain, helper, journalist, medic, photographer, technician', default: 'helper' },
+      group: { type: Types.Select, options: groups.join(), default: 'helper' },
       paramedic: { type: Boolean, indent: true },
       doctor: { type: Boolean, indent: true },
       emergencydoctor: { type: Boolean, indent: true },
