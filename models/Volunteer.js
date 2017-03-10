@@ -27,7 +27,7 @@ Volunteer.add(
       email: { type: Types.Email, initial: true, required: true, index: true, unique: true },
       phone: { type: String, width: 'short' },
       photo: { type: Types.File, storage, collapse: true },
-      address: { type: Types.Location, collapse: true },
+      address: { type: Types.Textarea, collapse: true },
       emergencyContacts: { type: String, width: 'short' },
       medication: { type: String },
       languages: { type: String },
