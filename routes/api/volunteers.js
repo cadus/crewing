@@ -41,6 +41,8 @@ exports.one = (req, res) => {
          if (err) return res.apiError('database error', err);
          if (!volunteer) return res.apiError('not found');
 
+         volunteer.verifyEmail();
+
          Mission.model
             .find({ crew: volunteer })
             .select('name status start end crew area')
