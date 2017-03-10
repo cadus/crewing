@@ -84,6 +84,11 @@ export default React.createClass({
    render() {
       const state = Object.assign({}, this.props.volunteer, this.state);
 
+      // TODO Ugly – build something better
+      const showImage = name => state[name] && state[name].filename
+         ? <img src={`/uploads/${state[name].filename}`} alt={name} style={{ height: 100, marginBottom: 10 }} />
+         : null;
+
       return (
          <div>
             {this.state.message &&
@@ -131,6 +136,7 @@ export default React.createClass({
                </FormRow>
 
                <FormField>
+                  {showImage('photo')}
                   <FileUpload name="photo" buttonLabelInitial="Upload a photo of you" buttonLabelChange="Change your photo" file={state.photo} />
                </FormField>
 
@@ -168,6 +174,7 @@ export default React.createClass({
 
                <FormRow>
                   <FormField width="one-half">
+                     {showImage('passport')}
                      <FileUpload
                         name="passport"
                         buttonLabelInitial="Upload a scan of your passport"
@@ -176,8 +183,9 @@ export default React.createClass({
                      />
                   </FormField>
 
-                  {this.state.group === 'journalist' &&
+                  {state.group === 'journalist' &&
                      <FormField width="one-half">
+                        {showImage('presscard')}
                         <FileUpload
                            name="presscard"
                            buttonLabelInitial="Upload a scan of your presscard"
@@ -187,8 +195,9 @@ export default React.createClass({
                      </FormField>
                   }
 
-                  {this.state.group === 'medic' &&
+                  {state.group === 'medic' &&
                      <FormField width="one-half">
+                        {showImage('approbation')}
                         <FileUpload
                            name="approbation"
                            buttonLabelInitial="Upload a scan of your approbation"

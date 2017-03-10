@@ -1,6 +1,7 @@
 const babelify = require('babelify');
 const browserify = require('browserify-middleware');
 const express = require('express');
+const path = require('path');
 const keystone = require('keystone');
 const cookieParser = require('cookie-parser');
 
@@ -27,7 +28,7 @@ exports = module.exports = (app) => {
    app.post('/api/volunteer/token', keystone.middleware.api, api.volunteers.changeToken);
 
    // Uploaded images should not be publicly accessible
-   app.use('/uploads/:filename', isAdminOrOwner, express.static('uploads'));
+   app.use('/uploads', isAdminOrOwner, express.static('uploads', { redirect: false }));
 
    // Bundle common packages
    app.get('/js/packages.js', browserify(commonPackages, { cache: true, precompile: true }));
@@ -58,7 +59,7 @@ function isAdmin(req, res, next) {
 
 function isAdminOrOwner(req, res, next) {
    const token = req.signedCookies.volunteer;
-   const filename = req.params.filename;
+   const filename = path.basename(req.url);
    const nope = () => res.sendStatus(403); // forbidden
 
    if (req.user) return next();
