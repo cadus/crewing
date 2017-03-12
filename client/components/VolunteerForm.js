@@ -223,6 +223,10 @@ export default React.createClass({
 
                <h3>Questions</h3>
 
+               <Alert type="info">
+                  The following information is confidential and will only be reviewed by the person responsible for crewing. We guarantee that your information will not be shared with third parties and is not accessable by other members / employees at Cadus.
+               </Alert>
+
                {_.map(questions['Questions'], (value, key) =>
                   <FormField label={value} key={key}>
                      <FormInput name={key} type="text" required defaultValue={state[key]} />
