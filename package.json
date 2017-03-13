@@ -13,7 +13,7 @@
     "start": "node index.js",
     "dev": "nodemon --inspect index.js",
     "mongo": "mkdir -p database; mongod --fork --dbpath database --logpath mongo.log",
-    "update-server": "ssh cadus 'cd crewing && git pull && pm2 reload crewing'",
+    "update-server": "ssh cadus 'cd crewing && git pull && pm2 ls && pm2 reload crewing'",
     "lint": "eslint .",
     "lint:fix": "eslint . --fix"
   },
