@@ -30,7 +30,6 @@ Volunteer.add(
       photo: { type: Types.File, storage, collapse: true },
       address: { type: Types.Textarea, collapse: true },
       emergencyContacts: { type: String, width: 'short' },
-      medication: { type: String },
       languages: { type: String },
       availabilities: { type: Types.List,
          fields: {

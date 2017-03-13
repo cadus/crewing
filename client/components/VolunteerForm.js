@@ -122,10 +122,6 @@ export default React.createClass({
                   </FormField>
                </FormRow>
 
-               <FormField label="Medication">
-                  <FormInput name="medication" type="text" required defaultValue={state.medication} />
-               </FormField>
-
                <FormRow>
                   <FormField label="Address" width="one-half">
                      <FormInput name="address" type="text" multiline required defaultValue={state.address} />
