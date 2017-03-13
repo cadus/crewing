@@ -15,10 +15,15 @@ export default React.createClass({
          isEditing: false,
          error: null,
          message: null,
+         hasVisitedBefore: !!window.localStorage.getItem('hasVisitedBefore'),
       };
    },
 
    componentDidMount() {
+      if (!this.state.hasVisitedBefore) {
+         window.localStorage.setItem('hasVisitedBefore', true);
+      }
+
       http.get('/api/volunteer')
          .then(({ volunteer, missions }) => this.setState({ volunteer, missions }))
          .catch(({ error }) => this.setState({ error }));
@@ -63,6 +68,9 @@ export default React.createClass({
             </header>
             {this.state.message &&
                <Alert type="success">{this.state.message}</Alert>
+            }
+            {!this.state.hasVisitedBefore && !this.state.isEditing &&
+               <Alert type="info"><strong>Welcome!</strong> To edit your personal information, click on “<strong>Change Data</strong>” ↗</Alert>
             }
             <Card>
                {this.state.isEditing
