@@ -119,7 +119,7 @@ export default React.createClass({
                   <FormField label="Date of Birth" width="one-half">
                      <DateInput
                         name="birth"
-                        defaultValue={this.state.birth}
+                        defaultValue={state.birth}
                         showMonthDropdown
                         showYearDropdown
                         dropdownMode="select"
