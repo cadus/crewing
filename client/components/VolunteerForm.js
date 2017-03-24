@@ -141,9 +141,17 @@ export default React.createClass({
                   <FormField label="Languages" width="one-half">
                      <FormInput name="languages" type="text" defaultValue={state.languages} />
                   </FormField>
-                  <FormField label="Citizenship / Dual Citizenship" width="one-half">
+               </FormRow>
+
+               <FormRow>
+                  <FormField label="Citizenship" width="one-half">
                      <FormInput name="citizenship" type="text" defaultValue={state.citizenship} />
                   </FormField>
+                  {state.citizenship &&
+                     <FormField label="Second Citizenship (if available)" width="one-half">
+                        <FormInput name="citizenship2" type="text" defaultValue={state.citizenship2} />
+                     </FormField>
+                  }
                </FormRow>
 
                <FormRow>

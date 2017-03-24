@@ -33,6 +33,7 @@ Volunteer.add(
       emergencyContacts: { type: String, width: 'short' },
       languages: { type: String },
       citizenship: { type: String },
+      citizenship2: { type: String },
       availabilities: { type: Types.List,
          fields: {
             from: { type: Types.Date, default: Date.now },
