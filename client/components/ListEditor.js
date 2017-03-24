@@ -1,6 +1,7 @@
 import React from 'react';
 import _ from 'lodash';
 import { Button, FormRow, FormField, FormInput, InputGroup } from 'elemental';
+import DateInput from './DateInput';
 
 export default React.createClass({
 
@@ -32,7 +33,9 @@ export default React.createClass({
    },
 
    onChange(event, id, name, value) {
-      event.stopPropagation(); // don't trigger parents listeners; they get notified later
+      if (event && event.stopPropagation) {
+         event.stopPropagation(); // don't trigger parents listeners; they get notified later
+      }
       const values = this.state.values;
       _.find(values, ['_id', id])[name] = value;
       this.setState({ values }, this.notifyParent);
@@ -80,11 +83,19 @@ export default React.createClass({
 
                   {_.map(this.props.fields, field =>
                      <InputGroup.Section key={field.name} grow>
-                        <FormInput
-                           name={field.name}
-                           type={field.type || 'text'}
-                           defaultValue={(field.formatter || _.identity)(value[field.name])}
-                        />
+                        {field.type === 'date' ?
+                           <DateInput
+                              name={field.name}
+                              defaultValue={(field.formatter || _.identity)(value[field.name])}
+                              onChange={date => this.onChange(null, value._id, field.name, date)}
+                           />
+                        :
+                           <FormInput
+                              name={field.name}
+                              type={field.type || 'text'}
+                              defaultValue={(field.formatter || _.identity)(value[field.name])}
+                           />
+                        }
                      </InputGroup.Section>
                   )}
 

@@ -1,10 +1,10 @@
 import React from 'react';
 import _ from 'lodash';
 import { Button, Form, FormRow, FormField, FormInput, FormSelect, FileUpload, Checkbox, Alert, Spinner } from 'elemental';
+import DateInput from './DateInput';
 import ListEditor from './ListEditor';
 import * as http from '../lib/http';
 import formData from '../lib/formData';
-import formatDate from '../lib/formatDate';
 import questions from '../../shared/questions.json';
 import groupsJSON from '../../shared/groups.json';
 
@@ -18,7 +18,7 @@ const boatDriverPermits = [
 ];
 
 const availabilityFields = ['from', 'till', 'confirmationTill']
-   .map(name => ({ name, type: 'date', formatter: formatDate }));
+   .map(name => ({ name, type: 'date' }));
 
 const workExperienceFields = ['employer', 'role', 'time', 'location'].map(name => ({ name }));
 
@@ -43,15 +43,21 @@ export default React.createClass({
       };
    },
 
-   onChange({ target }) {
-      if (target.type === 'file') {
-         this.setState({ [target.name]: target.files[0] });
-      }
-      else if (target.type === 'checkbox') {
-         this.setState({ [target.name]: target.checked });
+   onChange(event) {
+      if (event.target) {
+         const target = event.target;
+         if (target.type === 'file') {
+            this.setState({ [target.name]: target.files[0] });
+         }
+         else if (target.type === 'checkbox') {
+            this.setState({ [target.name]: target.checked });
+         }
+         else {
+            this.setState({ [target.name]: target.value });
+         }
       }
       else {
-         this.setState({ [target.name]: target.value });
+         this.setState({ [event.name]: event.value });
       }
    },
 
@@ -70,7 +76,6 @@ export default React.createClass({
    },
 
    setAvailabilities(availabilities) {
-      console.log('setAvailabilities', availabilities);
       this.setState({ availabilities });
    },
 
@@ -97,6 +102,7 @@ export default React.createClass({
                <Alert type={this.state.message.type}>{this.state.message.text}</Alert>
             }
             <Form onChange={this.onChange}>
+
                <FormRow>
                   <FormField label="First name" width="one-half">
                      <FormInput name="name.first" type="text" defaultValue={state.name.first} />
@@ -111,7 +117,14 @@ export default React.createClass({
                      <FormInput name="email" type="email" defaultValue={state.email} />
                   </FormField>
                   <FormField label="Date of Birth" width="one-half">
-                     <FormInput name="birth" type="date" defaultValue={state.birth} />
+                     <DateInput
+                        name="birth"
+                        defaultValue={this.state.birth}
+                        showMonthDropdown
+                        showYearDropdown
+                        dropdownMode="select"
+                        onChange={value => this.onChange({ name: 'birth', value })}
+                     />
                   </FormField>
                </FormRow>
 

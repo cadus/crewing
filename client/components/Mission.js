@@ -1,8 +1,10 @@
 import React from 'react';
+import moment from 'moment';
 import _ from 'lodash';
 import { Pill } from 'elemental';
 import { Map, TileLayer } from 'react-leaflet';
-import formatDate from '../lib/formatDate';
+
+const formatDate = date => moment(date).format(moment.localeData().longDateFormat('L'));
 
 export default React.createClass({
 

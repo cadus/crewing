@@ -36,7 +36,7 @@ exports = module.exports = (app) => {
    // Serve script bundles
    app.use('/js', browserify('./client/pages', {
       external: commonPackages,
-      transform: [babelify.configure({ presets: ['es2015', 'react'] })],
+      transform: [babelify.configure({ presets: ['es2015', 'react', 'stage-3'] })],
    }));
 
    app.disable('x-powered-by');
