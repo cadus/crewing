@@ -45,6 +45,7 @@ Volunteer.add(
       group: { type: Types.Select, options: groups.join(), default: 'helper' },
       paramedic: { type: Boolean, indent: true },
       doctor: { type: Boolean, indent: true },
+      doctorSpecialization: { type: String, dependsOn: { doctor: true } },
       emergencydoctor: { type: Boolean, indent: true },
       lifeguard: { type: Boolean, indent: true },
       experienceOnSea: { type: Boolean, indent: true },

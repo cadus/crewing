@@ -162,7 +162,18 @@ export default React.createClass({
 
                <FormField>
                   <Checkbox name="paramedic" label="Paramedic" defaultChecked={state.paramedic} />
-                  <Checkbox name="doctor" label="Doctor" defaultChecked={state.doctor} />
+
+                  <label className="Checkbox">
+                     <input type="checkbox" className="Checkbox__input" name="doctor" defaultChecked={state.doctor} />
+                     <span className="Checkbox__label">Doctor</span>
+                     {state.doctor &&
+                        <div style={{ paddingLeft: 23 }}>
+                           <label className="FormLabel">Specialization</label>
+                           <FormInput name="doctorSpecialization" type="text" defaultValue={state.doctorSpecialization} />
+                        </div>
+                     }
+                  </label>
+
                   <Checkbox name="emergencydoctor" label="Emergency Doctor" defaultChecked={state.emergencydoctor} />
                   <Checkbox name="lifeguard" label="Lifeguard" defaultChecked={state.lifeguard} />
                   <Checkbox name="experienceOnSea" label="Experience on Sea" defaultChecked={state.experienceOnSea} />
