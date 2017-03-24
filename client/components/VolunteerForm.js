@@ -108,21 +108,24 @@ export default React.createClass({
                   <FormField label="Email address" width="one-half">
                      <FormInput name="email" type="email" defaultValue={state.email} />
                   </FormField>
+                  <FormField label="Date of Birth" width="one-half">
+                     <FormInput name="birth" type="date" defaultValue={state.birth} />
+                  </FormField>
+               </FormRow>
+
+               <FormRow>
                   <FormField label="Phone number" width="one-half">
                      <FormInput name="phone" type="text" defaultValue={state.phone} />
                   </FormField>
-               </FormRow>
-
-               <FormRow>
                   <FormField label="Emergency Contacts" width="one-half">
                      <FormInput name="emergencyContacts" type="text" defaultValue={state.emergencyContacts} />
                   </FormField>
-                  <FormField label="Languages" width="one-half">
-                     <FormInput name="languages" type="text" defaultValue={state.languages} />
-                  </FormField>
                </FormRow>
 
                <FormRow>
+                  <FormField label="Languages" width="one-half">
+                     <FormInput name="languages" type="text" defaultValue={state.languages} />
+                  </FormField>
                   <FormField label="Citizenship / Dual Citizenship" width="one-half">
                      <FormInput name="citizenship" type="text" defaultValue={state.citizenship} />
                   </FormField>

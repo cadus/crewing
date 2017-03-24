@@ -26,6 +26,7 @@ Volunteer.add(
    {
       name: { type: Types.Name, initial: true, required: true, index: true },
       email: { type: Types.Email, initial: true, required: true, index: true, unique: true },
+      birth: { type: Types.Date },
       phone: { type: String, width: 'short' },
       photo: { type: Types.File, storage, collapse: true },
       address: { type: Types.Textarea, collapse: true },
