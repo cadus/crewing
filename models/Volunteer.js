@@ -31,6 +31,7 @@ Volunteer.add(
       address: { type: Types.Textarea, collapse: true },
       emergencyContacts: { type: String, width: 'short' },
       languages: { type: String },
+      citizenship: { type: String },
       availabilities: { type: Types.List,
          fields: {
             from: { type: Types.Date, default: Date.now },

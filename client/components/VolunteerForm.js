@@ -97,37 +97,43 @@ export default React.createClass({
             <Form onChange={this.onChange}>
                <FormRow>
                   <FormField label="First name" width="one-half">
-                     <FormInput name="name.first" type="text" required defaultValue={state.name.first} />
+                     <FormInput name="name.first" type="text" defaultValue={state.name.first} />
                   </FormField>
                   <FormField label="Last name" width="one-half">
-                     <FormInput name="name.last" type="text" required defaultValue={state.name.last} />
+                     <FormInput name="name.last" type="text" defaultValue={state.name.last} />
                   </FormField>
                </FormRow>
 
                <FormRow>
                   <FormField label="Email address" width="one-half">
-                     <FormInput name="email" type="email" required defaultValue={state.email} />
+                     <FormInput name="email" type="email" defaultValue={state.email} />
                   </FormField>
                   <FormField label="Phone number" width="one-half">
-                     <FormInput name="phone" type="text" required defaultValue={state.phone} />
+                     <FormInput name="phone" type="text" defaultValue={state.phone} />
                   </FormField>
                </FormRow>
 
                <FormRow>
                   <FormField label="Emergency Contacts" width="one-half">
-                     <FormInput name="emergencyContacts" type="text" required defaultValue={state.emergencyContacts} />
+                     <FormInput name="emergencyContacts" type="text" defaultValue={state.emergencyContacts} />
                   </FormField>
                   <FormField label="Languages" width="one-half">
-                     <FormInput name="languages" type="text" required defaultValue={state.languages} />
+                     <FormInput name="languages" type="text" defaultValue={state.languages} />
+                  </FormField>
+               </FormRow>
+
+               <FormRow>
+                  <FormField label="Citizenship / Dual Citizenship" width="one-half">
+                     <FormInput name="citizenship" type="text" defaultValue={state.citizenship} />
                   </FormField>
                </FormRow>
 
                <FormRow>
                   <FormField label="Address" width="one-half">
-                     <FormInput name="address" type="text" multiline required defaultValue={state.address} />
+                     <FormInput name="address" type="text" multiline defaultValue={state.address} />
                   </FormField>
                   <FormField label="Notes" width="one-half">
-                     <FormInput name="notes" type="text" multiline required defaultValue={state.notes} />
+                     <FormInput name="notes" type="text" multiline defaultValue={state.notes} />
                   </FormField>
                </FormRow>
 
@@ -236,7 +242,7 @@ export default React.createClass({
 
                {_.map(questions['Questions'], (value, key) =>
                   <FormField label={value} key={key}>
-                     <FormInput name={key} type="text" required defaultValue={state[key]} />
+                     <FormInput name={key} type="text" defaultValue={state[key]} />
                   </FormField>
                )}
 
@@ -246,7 +252,7 @@ export default React.createClass({
 
                {_.map(questions['Personal environment'], (value, key) =>
                   <FormField label={value} key={key}>
-                     <FormInput name={key} type="text" required defaultValue={state[key]} />
+                     <FormInput name={key} type="text" defaultValue={state[key]} />
                   </FormField>
                )}
 
