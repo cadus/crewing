@@ -22,6 +22,8 @@ const availabilityFields = ['from', 'till', 'confirmationTill']
 
 const workExperienceFields = ['employer', 'role', 'time', 'location'].map(name => ({ name }));
 
+const indentStyle = { paddingLeft: 23 };
+
 export default React.createClass({
 
    propTypes: {
@@ -170,13 +172,22 @@ export default React.createClass({
                </FormRow>
 
                <FormField>
+                  <Checkbox name="driversLicence" label="Driver's Licence" defaultChecked={state.driversLicence} />
+                  {state.driversLicence &&
+                     <div style={indentStyle}>
+                        <Checkbox name="truckDriversLicence" label="Truck Driver's Licence" defaultChecked={state.truckDriversLicence} />
+                        <Checkbox name="internationalDriversLicence" label="International Driver's Licence" defaultChecked={state.internationalDriversLicence} />
+                        <Checkbox name="internationalTruckDriversLicence" label="International Truck Driver's Licence" defaultChecked={state.internationalTruckDriversLicence} />
+                     </div>
+                  }
+
                   <Checkbox name="paramedic" label="Paramedic" defaultChecked={state.paramedic} />
 
                   <label className="Checkbox">
                      <input type="checkbox" className="Checkbox__input" name="doctor" defaultChecked={state.doctor} />
                      <span className="Checkbox__label">Doctor</span>
                      {state.doctor &&
-                        <div style={{ paddingLeft: 23 }}>
+                        <div style={indentStyle}>
                            <label className="FormLabel">Specialization</label>
                            <FormInput name="doctorSpecialization" type="text" defaultValue={state.doctorSpecialization} />
                         </div>

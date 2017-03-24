@@ -45,6 +45,10 @@ Volunteer.add(
    'Group & Qualification',
    {
       group: { type: Types.Select, options: groups.join(), default: 'helper' },
+      driversLicence: { type: Boolean, indent: true },
+      truckDriversLicence: { type: Boolean, indent: true, dependsOn: { driversLicence: true } },
+      internationalDriversLicence: { type: Boolean, indent: true, dependsOn: { driversLicence: true } },
+      internationalTruckDriversLicence: { type: Boolean, indent: true, dependsOn: { driversLicence: true } },
       paramedic: { type: Boolean, indent: true },
       doctor: { type: Boolean, indent: true },
       doctorSpecialization: { type: String, dependsOn: { doctor: true } },
