@@ -29,7 +29,7 @@ export default React.createClass({
       ['name', 'email', 'dataPrivacy'].map(field => body.append(field, this.state[field]));
       http.post('/api/volunteer', { body })
          .then(() => this.setState({ submitted: true }))
-         .catch(error => this.setState({ submitted: true, error: error.detail.error }));
+         .catch(({ error }) => this.setState({ submitted: true, error }));
    },
 
    renderResult() {
@@ -56,7 +56,7 @@ export default React.createClass({
                   <FormInput name="name" autoFocus required />
                </FormField>
                <FormField label="Email address">
-                  <FormInput name="email" required />
+                  <FormInput name="email" type="email" required />
                </FormField>
                <label className="Checkbox">
                   <input type="checkbox" name="dataPrivacy" className="Checkbox__input" required />

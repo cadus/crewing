@@ -26,7 +26,7 @@ exports.setToken = (req, res) => {
  */
 exports.all = (req, res) => {
    Volunteer.model.find((err, volunteers) => {
-      if (err) return res.apiError('database error', err);
+      if (err) return res.apiError(err.detail.errmsg);
       res.apiResponse({ volunteers });
    });
 };
@@ -38,7 +38,7 @@ exports.one = (req, res) => {
    Volunteer.model
       .findOne({ token: req.token })
       .exec((err, volunteer) => {
-         if (err) return res.apiError('database error', err);
+         if (err) return res.apiError(err.detail.errmsg);
          if (!volunteer) return res.apiError('not found');
 
          volunteer.verifyEmail();
@@ -50,7 +50,7 @@ exports.one = (req, res) => {
             .populate('crew', 'name')
             .populate('area')
             .exec((err2, missions) => {
-               if (err2) return res.apiError('database error', err);
+               if (err2) return res.apiError(err2.detail.errmsg);
                res.apiResponse({ volunteer, missions });
             });
       });
@@ -63,7 +63,13 @@ exports.create = (req, res) => {
    const volunteer = new Volunteer.model();
 
    volunteer.getUpdateHandler(req).process(req.body, (err) => {
-      if (err) return res.apiError('error', err);
+
+      if (err) {
+         const message = err.detail.code === 11000
+            ? 'user already exists'
+            : err.detail.errmsg || err.error;
+         return res.apiError(message);
+      }
 
       new Email('templates/emails/volunteer-created.jade', { transport: 'nodemailer' })
          .send({
@@ -86,11 +92,11 @@ exports.update = (req, res) => {
    Volunteer.model
       .findOne({ token: req.token })
       .exec((err, volunteer) => {
-         if (err) return res.apiError('database error', err);
+         if (err) return res.apiError(err.detail.errmsg);
          if (!volunteer) return res.apiError('not found');
 
          volunteer.getUpdateHandler(req).process(req.body, (err2) => {
-            if (err2) return res.apiError('update error', err2);
+            if (err2) return res.apiError(err2.detail.errmsg);
             res.apiResponse({ volunteer });
          });
       });
@@ -103,12 +109,12 @@ exports.changeToken = (req, res) => {
    Volunteer.model
       .findOne({ email: req.body.email })
       .exec((err, volunteer) => {
-         if (err) return res.apiError('database error', err);
+         if (err) return res.apiError(err.detail.errmsg);
          if (!volunteer) return res.apiError('not found');
 
          volunteer.token = getToken();
          volunteer.save((err2) => {
-            if (err2) return res.apiError('update error', err2);
+            if (err2) return res.apiError(err2.detail.errmsg);
 
             new Email('templates/emails/volunteer-token-changed.jade', { transport: 'nodemailer' })
                .send({
@@ -132,11 +138,11 @@ exports.remove = (req, res) => {
    Volunteer.model
       .findOne({ token: req.token })
       .exec((err, volunteer) => {
-         if (err) return res.apiError('database error', err);
+         if (err) return res.apiError(err.detail.errmsg);
          if (!volunteer) return res.apiError('not found');
 
          volunteer.remove((err2) => {
-            if (err2) return res.apiError('database error', err2);
+            if (err2) return res.apiError(err2.detail.errmsg);
             return res.apiResponse({ success: true });
          });
       });

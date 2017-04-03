@@ -23,7 +23,7 @@ export default React.createClass({
       body.append('email', this.state.email);
       http.post('/api/volunteer/token', { body })
          .then(() => this.setState({ submitted: true }))
-         .catch(error => this.setState({ submitted: true, error: error.detail.error }));
+         .catch(({ error }) => this.setState({ submitted: true, error }));
    },
 
    renderResult() {

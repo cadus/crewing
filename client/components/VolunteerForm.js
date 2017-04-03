@@ -89,7 +89,7 @@ export default React.createClass({
             });
             this.setMessage('Changes were saved.', 'success');
          })
-         .catch(error => this.setMessage(error.message, 'danger'));
+         .catch(({ error }) => this.setMessage(error, 'danger'));
    },
 
    getDiff(oldVolunteer, newVolunteer) {
