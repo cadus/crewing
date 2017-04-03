@@ -4,13 +4,19 @@ import { FileUpload } from 'elemental';
 export default React.createClass({
 
    propTypes: {
-      file: React.PropTypes.object,
+      file: React.PropTypes.oneOfType([React.PropTypes.string, React.PropTypes.object]),
+      onChange: React.PropTypes.func,
    },
 
    getDefaultProps() {
       return {
          file: {},
+         onChange() {},
       };
+   },
+
+   onChange(e, data) {
+      this.props.onChange(data !== null ? data.file : '');
    },
 
    setElement(element) {
@@ -37,10 +43,13 @@ export default React.createClass({
    },
 
    render() {
+      const { onChange, file, ...rest } = this.props; // eslint-disable-line no-unused-vars
       return (
          <FileUpload
             ref={this.setElement}
-            {...this.props}
+            accept="image/jpg, image/gif, image/png"
+            onChange={this.onChange}
+            {...rest}
          />
       );
    },

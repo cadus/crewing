@@ -53,7 +53,8 @@ export default React.createClass({
       if (event.target) {
          const target = event.target;
          if (target.type === 'file') {
-            volunteer[target.name] = target.files[0];
+            // can be ignored as it's handled by the FileUpload component
+            // volunteer[target.name] = target.files[0];
          }
          else if (target.type === 'checkbox') {
             volunteer[target.name] = target.checked;
@@ -180,7 +181,13 @@ export default React.createClass({
                </FormRow>
 
                <FormField>
-                  <FileUpload name="photo" buttonLabelInitial="Upload a photo of you" buttonLabelChange="Change your photo" file={volunteer.photo} />
+                  <FileUpload
+                     name="photo"
+                     buttonLabelInitial="Upload a photo of you"
+                     buttonLabelChange="Change your photo"
+                     file={volunteer.photo}
+                     onChange={this.setPart('photo')}
+                  />
                </FormField>
 
                <hr />
@@ -242,6 +249,7 @@ export default React.createClass({
                         buttonLabelInitial="Upload a scan of your passport"
                         buttonLabelChange="Change the scan of your passport"
                         file={volunteer.passport}
+                        onChange={this.setPart('passport')}
                      />
                   </FormField>
 
@@ -252,6 +260,7 @@ export default React.createClass({
                            buttonLabelInitial="Upload a scan of your presscard"
                            buttonLabelChange="Change the scan of your presscard"
                            file={volunteer.presscard}
+                           onChange={this.setPart('presscard')}
                         />
                      </FormField>
                   }
@@ -263,6 +272,7 @@ export default React.createClass({
                            buttonLabelInitial="Upload a scan of your approbation"
                            buttonLabelChange="Change the scan of your approbation"
                            file={volunteer.approbation}
+                           onChange={this.setPart('approbation')}
                         />
                      </FormField>
                   }
