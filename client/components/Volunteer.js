@@ -34,6 +34,10 @@ export default React.createClass({
       _.delay(() => this.setState({ message: null }), 3000);
    },
 
+   setVolunteer(volunteer) {
+      this.setState({ volunteer });
+   },
+
    toggleEditMode() {
       this.setState({ isEditing: !this.state.isEditing });
    },
@@ -74,7 +78,7 @@ export default React.createClass({
             }
             <Card>
                {this.state.isEditing
-                  ? <VolunteerForm volunteer={this.state.volunteer} />
+                  ? <VolunteerForm volunteer={this.state.volunteer} onChange={this.setVolunteer} />
                   : <Missions missions={this.state.missions} />
                }
             </Card>

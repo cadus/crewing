@@ -1,6 +1,7 @@
 import React from 'react';
 import _ from 'lodash';
-import { Button, Form, FormRow, FormField, FormInput, FormSelect, FileUpload, Checkbox, Alert, Spinner } from 'elemental';
+import { Button, Form, FormRow, FormField, FormInput, FormSelect, Checkbox, Alert, Spinner } from 'elemental';
+import FileUpload from './FileUpload';
 import DateInput from './DateInput';
 import ListEditor from './ListEditor';
 import * as http from '../lib/http';
@@ -28,11 +29,13 @@ export default React.createClass({
 
    propTypes: {
       volunteer: React.PropTypes.object,
+      onChange: React.PropTypes.func,
    },
 
    getDefaultProps() {
       return {
          volunteer: {},
+         onChange: _.noop,
       };
    },
 
@@ -40,47 +43,65 @@ export default React.createClass({
       return {
          message: null,
          isSubmitting: false,
+         volunteer: _.cloneDeep(this.props.volunteer),
       };
    },
 
    onChange(event) {
+      const volunteer = this.state.volunteer;
+
       if (event.target) {
          const target = event.target;
          if (target.type === 'file') {
-            this.setState({ [target.name]: target.files[0] });
+            volunteer[target.name] = target.files[0];
          }
          else if (target.type === 'checkbox') {
-            this.setState({ [target.name]: target.checked });
+            volunteer[target.name] = target.checked;
          }
          else {
-            this.setState({ [target.name]: target.value });
+            volunteer[target.name] = target.value;
          }
       }
       else {
-         this.setState({ [event.name]: event.value });
+         volunteer[event.name] = event.value;
       }
+
+      this.setState({ volunteer });
    },
 
    onSubmit() {
       this.setState({ isSubmitting: true });
 
-      const values = _.omit(this.state, _.keys(this.getInitialState()));
+      const oldVolunteer = this.props.volunteer;
+      const newVolunteer = this.state.volunteer;
+      const values = this.getDiff(oldVolunteer, newVolunteer);
       const body = formData(values);
 
       http.put('/api/volunteer', { body })
-         .then(() => {
-            this.setState({ isSubmitting: false });
+         .then(({ volunteer }) => {
+            this.props.onChange(volunteer);
+            this.setState({
+               volunteer: _.cloneDeep(volunteer),
+               isSubmitting: false,
+            });
             this.setMessage('Changes were saved.', 'success');
          })
          .catch(error => this.setMessage(error.message, 'danger'));
    },
 
-   setAvailabilities(availabilities) {
-      this.setState({ availabilities });
+   getDiff(oldVolunteer, newVolunteer) {
+      return _.transform(newVolunteer, (result, value, key) => {
+         if (_.isEqual(oldVolunteer[key], value)) return;
+         result[key] = value;
+      }, {});
    },
 
-   setWorkExperience(workExperience) {
-      this.setState({ workExperience });
+   setPart(name) {
+      return (value) => {
+         const volunteer = this.state.volunteer;
+         volunteer[name] = value;
+         this.setState({ volunteer });
+      };
    },
 
    setMessage(text, type) {
@@ -89,12 +110,7 @@ export default React.createClass({
    },
 
    render() {
-      const state = Object.assign({}, this.props.volunteer, this.state);
-
-      // TODO Ugly – build something better
-      const showImage = name => state[name] && state[name].filename
-         ? <img src={`/uploads/${state[name].filename}`} alt={name} style={{ height: 100, marginBottom: 10 }} />
-         : null;
+      const volunteer = this.state.volunteer;
 
       return (
          <div>
@@ -105,21 +121,21 @@ export default React.createClass({
 
                <FormRow>
                   <FormField label="First name" width="one-half">
-                     <FormInput name="name.first" type="text" defaultValue={state.name.first} />
+                     <FormInput name="name.first" type="text" defaultValue={volunteer.name.first} />
                   </FormField>
                   <FormField label="Last name" width="one-half">
-                     <FormInput name="name.last" type="text" defaultValue={state.name.last} />
+                     <FormInput name="name.last" type="text" defaultValue={volunteer.name.last} />
                   </FormField>
                </FormRow>
 
                <FormRow>
                   <FormField label="Email address" width="one-half">
-                     <FormInput name="email" type="email" defaultValue={state.email} />
+                     <FormInput name="email" type="email" defaultValue={volunteer.email} />
                   </FormField>
                   <FormField label="Date of Birth" width="one-half">
                      <DateInput
                         name="birth"
-                        defaultValue={state.birth}
+                        defaultValue={volunteer.birth}
                         showMonthDropdown
                         showYearDropdown
                         dropdownMode="select"
@@ -130,42 +146,41 @@ export default React.createClass({
 
                <FormRow>
                   <FormField label="Phone number" width="one-half">
-                     <FormInput name="phone" type="text" defaultValue={state.phone} />
+                     <FormInput name="phone" type="text" defaultValue={volunteer.phone} />
                   </FormField>
                   <FormField label="Emergency Contacts" width="one-half">
-                     <FormInput name="emergencyContacts" type="text" defaultValue={state.emergencyContacts} />
+                     <FormInput name="emergencyContacts" type="text" defaultValue={volunteer.emergencyContacts} />
                   </FormField>
                </FormRow>
 
                <FormRow>
                   <FormField label="Languages" width="one-half">
-                     <FormInput name="languages" type="text" defaultValue={state.languages} />
+                     <FormInput name="languages" type="text" defaultValue={volunteer.languages} />
                   </FormField>
                </FormRow>
 
                <FormRow>
                   <FormField label="Citizenship" width="one-half">
-                     <FormInput name="citizenship" type="text" defaultValue={state.citizenship} />
+                     <FormInput name="citizenship" type="text" defaultValue={volunteer.citizenship} />
                   </FormField>
-                  {state.citizenship &&
+                  {volunteer.citizenship &&
                      <FormField label="Second Citizenship (if available)" width="one-half">
-                        <FormInput name="citizenship2" type="text" defaultValue={state.citizenship2} />
+                        <FormInput name="citizenship2" type="text" defaultValue={volunteer.citizenship2} />
                      </FormField>
                   }
                </FormRow>
 
                <FormRow>
                   <FormField label="Address" width="one-half">
-                     <FormInput name="address" type="text" multiline defaultValue={state.address} />
+                     <FormInput name="address" type="text" multiline defaultValue={volunteer.address} />
                   </FormField>
                   <FormField label="Notes" width="one-half">
-                     <FormInput name="notes" type="text" multiline defaultValue={state.notes} />
+                     <FormInput name="notes" type="text" multiline defaultValue={volunteer.notes} />
                   </FormField>
                </FormRow>
 
                <FormField>
-                  {showImage('photo')}
-                  <FileUpload name="photo" buttonLabelInitial="Upload a photo of you" buttonLabelChange="Change your photo" file={state.photo} />
+                  <FileUpload name="photo" buttonLabelInitial="Upload a photo of you" buttonLabelChange="Change your photo" file={volunteer.photo} />
                </FormField>
 
                <hr />
@@ -175,8 +190,8 @@ export default React.createClass({
                <ListEditor
                   headings={['Available from', 'Available till', 'Confirmation till']}
                   fields={availabilityFields}
-                  values={state.availabilities}
-                  onChange={this.setAvailabilities}
+                  values={volunteer.availabilities}
+                  onChange={this.setPart('availabilities')}
                />
 
                <hr />
@@ -185,72 +200,69 @@ export default React.createClass({
 
                <FormRow>
                   <FormField label="Group" width="one-half">
-                     <FormSelect name="group" options={groups} defaultValue={state.group} onChange={_.noop} />
+                     <FormSelect name="group" options={groups} defaultValue={volunteer.group} onChange={_.noop} />
                   </FormField>
                   <FormField label="Boat Driver Permit" width="one-half">
-                     <FormSelect name="boatDriverPermit" options={boatDriverPermits} defaultValue={state.boatDriverPermit} onChange={_.noop} />
+                     <FormSelect name="boatDriverPermit" options={boatDriverPermits} defaultValue={volunteer.boatDriverPermit} onChange={_.noop} />
                   </FormField>
                </FormRow>
 
                <FormField>
-                  <Checkbox name="driversLicence" label="Driver's Licence" defaultChecked={state.driversLicence} />
-                  {state.driversLicence &&
+                  <Checkbox name="driversLicence" label="Driver's Licence" defaultChecked={volunteer.driversLicence} />
+                  {volunteer.driversLicence &&
                      <div style={indentStyle}>
-                        <Checkbox name="truckDriversLicence" label="Truck Driver's Licence" defaultChecked={state.truckDriversLicence} />
-                        <Checkbox name="internationalDriversLicence" label="International Driver's Licence" defaultChecked={state.internationalDriversLicence} />
-                        <Checkbox name="internationalTruckDriversLicence" label="International Truck Driver's Licence" defaultChecked={state.internationalTruckDriversLicence} />
+                        <Checkbox name="truckDriversLicence" label="Truck Driver's Licence" defaultChecked={volunteer.truckDriversLicence} />
+                        <Checkbox name="internationalDriversLicence" label="International Driver's Licence" defaultChecked={volunteer.internationalDriversLicence} />
+                        <Checkbox name="internationalTruckDriversLicence" label="International Truck Driver's Licence" defaultChecked={volunteer.internationalTruckDriversLicence} />
                      </div>
                   }
 
-                  <Checkbox name="paramedic" label="Paramedic" defaultChecked={state.paramedic} />
+                  <Checkbox name="paramedic" label="Paramedic" defaultChecked={volunteer.paramedic} />
 
                   <label className="Checkbox">
-                     <input type="checkbox" className="Checkbox__input" name="doctor" defaultChecked={state.doctor} />
+                     <input type="checkbox" className="Checkbox__input" name="doctor" defaultChecked={volunteer.doctor} />
                      <span className="Checkbox__label">Doctor</span>
-                     {state.doctor &&
+                     {volunteer.doctor &&
                         <div style={indentStyle}>
                            <label className="FormLabel">Specialization</label>
-                           <FormInput name="doctorSpecialization" type="text" defaultValue={state.doctorSpecialization} />
+                           <FormInput name="doctorSpecialization" type="text" defaultValue={volunteer.doctorSpecialization} />
                         </div>
                      }
                   </label>
 
-                  <Checkbox name="emergencydoctor" label="Emergency Doctor" defaultChecked={state.emergencydoctor} />
-                  <Checkbox name="lifeguard" label="Lifeguard" defaultChecked={state.lifeguard} />
-                  <Checkbox name="experienceOnSea" label="Experience on Sea" defaultChecked={state.experienceOnSea} />
+                  <Checkbox name="emergencydoctor" label="Emergency Doctor" defaultChecked={volunteer.emergencydoctor} />
+                  <Checkbox name="lifeguard" label="Lifeguard" defaultChecked={volunteer.lifeguard} />
+                  <Checkbox name="experienceOnSea" label="Experience on Sea" defaultChecked={volunteer.experienceOnSea} />
                </FormField>
 
                <FormRow>
                   <FormField width="one-half">
-                     {showImage('passport')}
                      <FileUpload
                         name="passport"
                         buttonLabelInitial="Upload a scan of your passport"
                         buttonLabelChange="Change the scan of your passport"
-                        file={state.passport}
+                        file={volunteer.passport}
                      />
                   </FormField>
 
-                  {state.group === 'journalist' &&
+                  {volunteer.group === 'journalist' &&
                      <FormField width="one-half">
-                        {showImage('presscard')}
                         <FileUpload
                            name="presscard"
                            buttonLabelInitial="Upload a scan of your presscard"
                            buttonLabelChange="Change the scan of your presscard"
-                           file={state.presscard}
+                           file={volunteer.presscard}
                         />
                      </FormField>
                   }
 
-                  {state.group === 'medic' &&
+                  {volunteer.group === 'medic' &&
                      <FormField width="one-half">
-                        {showImage('approbation')}
                         <FileUpload
                            name="approbation"
                            buttonLabelInitial="Upload a scan of your approbation"
                            buttonLabelChange="Change the scan of your approbation"
-                           file={state.approbation}
+                           file={volunteer.approbation}
                         />
                      </FormField>
                   }
@@ -263,8 +275,8 @@ export default React.createClass({
                <ListEditor
                   headings={['Name of employer', 'Title / role', 'Dates worked', 'Location']}
                   fields={workExperienceFields}
-                  values={state.workExperience}
-                  onChange={this.setWorkExperience}
+                  values={volunteer.workExperience}
+                  onChange={this.setPart('workExperience')}
                />
 
                <hr />
@@ -277,7 +289,7 @@ export default React.createClass({
 
                {_.map(questions['Questions'], (value, key) =>
                   <FormField label={value} key={key}>
-                     <FormInput name={key} type="text" defaultValue={state[key]} />
+                     <FormInput name={key} type="text" defaultValue={volunteer[key]} />
                   </FormField>
                )}
 
@@ -287,7 +299,7 @@ export default React.createClass({
 
                {_.map(questions['Personal environment'], (value, key) =>
                   <FormField label={value} key={key}>
-                     <FormInput name={key} type="text" defaultValue={state[key]} />
+                     <FormInput name={key} type="text" defaultValue={volunteer[key]} />
                   </FormField>
                )}
 
