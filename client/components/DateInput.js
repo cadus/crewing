@@ -27,7 +27,7 @@ export default React.createClass({
 
    render() {
       const defaultValue = this.props.defaultValue;
-      const value = defaultValue && typeof defaultValue === 'string' ? moment(defaultValue, moment.ISO_8601) : defaultValue;
+      const value = defaultValue && _.isString(defaultValue) ? moment(defaultValue, moment.ISO_8601) : defaultValue;
       const rest = _.omit(this.props, ['onChange', 'onChangeRaw']);
 
       return (
