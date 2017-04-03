@@ -1,3 +1,4 @@
+const fs = require('fs');
 const keystone = require('keystone');
 const utils = require('keystone-utils');
 const transform = require('model-transform');
@@ -112,11 +113,21 @@ Volunteer.schema.methods.hasFile = function (filename) {
       .some(name => this[name] && this[name].filename === filename);
 };
 
+Volunteer.schema.post('init', function () {
+   this._original = this.toObject();
+});
 
 Volunteer.schema.pre('save', function (next) {
    if (this.isNew) {
       this.token = getToken();
    }
+
+   ['photo', 'passport', 'presscard', 'approbation'].forEach(field => {
+      if (this.isModified(field) && this._original[field].filename) {
+         fs.unlinkSync(`uploads/${this._original[field].filename}`);
+      }
+   });
+
    next();
 });
 
