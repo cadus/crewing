@@ -18,7 +18,7 @@ export default React.createClass({
    },
 
    onChange(momentData) {
-      this.props.onChange(momentData.format());
+      this.props.onChange(momentData ? momentData.format() : momentData);
    },
 
    onChangeRaw(event) {
