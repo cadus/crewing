@@ -70,7 +70,9 @@ export default React.createClass({
       this.setState({ volunteer });
    },
 
-   onSubmit() {
+   onSubmit(event) {
+      event.preventDefault();
+
       this.setState({ isSubmitting: true });
 
       const oldVolunteer = this.props.volunteer;
@@ -115,23 +117,25 @@ export default React.createClass({
 
       return (
          <div>
-            {this.state.message &&
-               <Alert type={this.state.message.type}>{this.state.message.text}</Alert>
+            {this.state.message
+               ? <Alert type={this.state.message.type}>{this.state.message.text}</Alert>
+               : <Alert type="info">All blue bordered fields are required.</Alert>
             }
-            <Form onChange={this.onChange}>
+
+            <Form onChange={this.onChange} onSubmit={this.onSubmit}>
 
                <FormRow>
                   <FormField label="First name" width="one-half">
-                     <FormInput name="name.first" type="text" defaultValue={volunteer.name.first} />
+                     <FormInput name="name.first" type="text" defaultValue={volunteer.name.first} required />
                   </FormField>
                   <FormField label="Last name" width="one-half">
-                     <FormInput name="name.last" type="text" defaultValue={volunteer.name.last} />
+                     <FormInput name="name.last" type="text" defaultValue={volunteer.name.last} required />
                   </FormField>
                </FormRow>
 
                <FormRow>
                   <FormField label="Email address" width="one-half">
-                     <FormInput name="email" type="email" defaultValue={volunteer.email} />
+                     <FormInput name="email" type="email" defaultValue={volunteer.email} required />
                   </FormField>
                   <FormField label="Date of Birth" width="one-half">
                      <DateInput
@@ -141,13 +145,14 @@ export default React.createClass({
                         showYearDropdown
                         dropdownMode="select"
                         onChange={value => this.onChange({ name: 'birth', value })}
+                        required
                      />
                   </FormField>
                </FormRow>
 
                <FormRow>
                   <FormField label="Phone number" width="one-half">
-                     <FormInput name="phone" type="text" defaultValue={volunteer.phone} />
+                     <FormInput name="phone" type="text" defaultValue={volunteer.phone} required />
                   </FormField>
                   <FormField label="Emergency Contacts" width="one-half">
                      <FormInput name="emergencyContacts" type="text" defaultValue={volunteer.emergencyContacts} />
@@ -156,13 +161,13 @@ export default React.createClass({
 
                <FormRow>
                   <FormField label="Languages" width="one-half">
-                     <FormInput name="languages" type="text" defaultValue={volunteer.languages} />
+                     <FormInput name="languages" type="text" defaultValue={volunteer.languages} required />
                   </FormField>
                </FormRow>
 
                <FormRow>
                   <FormField label="Citizenship" width="one-half">
-                     <FormInput name="citizenship" type="text" defaultValue={volunteer.citizenship} />
+                     <FormInput name="citizenship" type="text" defaultValue={volunteer.citizenship} required />
                   </FormField>
                   {volunteer.citizenship &&
                      <FormField label="Second Citizenship (if available)" width="one-half">
@@ -173,7 +178,7 @@ export default React.createClass({
 
                <FormRow>
                   <FormField label="Address" width="one-half">
-                     <FormInput name="address" type="text" multiline defaultValue={volunteer.address} />
+                     <FormInput name="address" type="text" multiline defaultValue={volunteer.address} required />
                   </FormField>
                   <FormField label="Notes" width="one-half">
                      <FormInput name="notes" type="text" multiline defaultValue={volunteer.notes} />
@@ -299,7 +304,7 @@ export default React.createClass({
 
                {_.map(questions['Questions'], (value, key) =>
                   <FormField label={value} key={key}>
-                     <FormInput name={key} type="text" defaultValue={volunteer[key]} />
+                     <FormInput name={key} type="text" defaultValue={volunteer[key]} required />
                   </FormField>
                )}
 
@@ -309,15 +314,16 @@ export default React.createClass({
 
                {_.map(questions['Personal environment'], (value, key) =>
                   <FormField label={value} key={key}>
-                     <FormInput name={key} type="text" defaultValue={volunteer[key]} />
+                     <FormInput name={key} type="text" defaultValue={volunteer[key]} required />
                   </FormField>
                )}
 
-               <hr />
+               <div style={{ position: 'sticky', bottom: 0, padding: '1rem', backgroundColor: '#fff', textAlign: 'center' }}>
+                  <Button type="primary" submit style={{ padding: '0 2rem' }}>
+                     Save Data {this.state.isSubmitting && <Spinner type="inverted" />}
+                  </Button>
+               </div>
 
-               <Button type="primary" onClick={this.onSubmit}>
-                  Save Data {this.state.isSubmitting && <Spinner type="inverted" />}
-               </Button>
             </Form>
          </div>
       );
