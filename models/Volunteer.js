@@ -122,8 +122,9 @@ Volunteer.schema.pre('save', function (next) {
       this.token = getToken();
    }
 
+   // if there's an earlier version of a file, delete it
    ['photo', 'passport', 'presscard', 'approbation'].forEach(field => {
-      if (this.isModified(field) && this._original[field].filename) {
+      if (this.isModified(field) && this._original[field] && this._original[field].filename) {
          fs.unlinkSync(`uploads/${this._original[field].filename}`);
       }
    });
