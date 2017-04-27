@@ -46,7 +46,7 @@ export default React.createClass({
       if (!this.state.missions) return null;
 
       if (!this.state.missions.length) {
-         return <p>You're not on any missions yet.</p>;
+         return <Card>You're not on any missions yet.</Card>;
       }
 
       return (
