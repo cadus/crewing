@@ -64,11 +64,15 @@ exports.update = (req, res) => {
             data.removed = oldCrewIDs.filter(id => !newCrewIDs.includes(id));
             data.added = newCrewIDs.filter(id => !oldCrewIDs.includes(id));
 
+            newData.crew // set the status of newly added volunteers on pending
+               .filter(a => data.added.includes(a.volunteer))
+               .forEach(a => a.status = 'pending');
+
             if (newData.start || newData.end) {
                data.unchanged = oldCrewIDs.filter(id => newCrewIDs.includes(id));
                newData.crew
-                  .filter(assignment => assignment.status === 'yes')
-                  .forEach(assignment => assignment.status = 'pending');
+                  .filter(a => a.status === 'yes')
+                  .forEach(a => a.status = 'pending');
             }
          }
 
