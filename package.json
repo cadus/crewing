@@ -40,6 +40,7 @@
     "react-datepicker": "^0.43.0",
     "react-dom": "^15.4.2",
     "react-leaflet": "^1.1.4",
+    "react-select": "^1.0.0-rc.3",
     "recursive-iterator": "^2.0.3",
     "whatwg-fetch": "^2.0.3"
   },

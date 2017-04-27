@@ -17,9 +17,15 @@ exports = module.exports = (app) => {
    app.use(cookieParser());
 
    app.get('/', (req, res) => res.render('react', { page: 'signup' }));
+   app.get('/missions', (req, res) => res.render('react', { page: 'missions' }));
    app.get('/volunteer', (req, res) => res.render('react', { page: 'volunteer' }));
 
    app.get('/volunteer/:token', api.volunteers.setToken);
+
+   app.get('/api/missions', keystone.middleware.api, isAdmin, api.missions.all);
+   app.post('/api/missions', keystone.middleware.api, api.missions.create);
+   app.get('/api/missions/:id', keystone.middleware.api, hasToken, api.missions.one);
+   app.put('/api/missions/:id', keystone.middleware.api, hasToken, api.missions.update);
 
    app.get('/api/volunteers', keystone.middleware.api, isAdmin, api.volunteers.all);
    app.get('/api/volunteer', keystone.middleware.api, hasToken, api.volunteers.one);

@@ -44,10 +44,10 @@ exports.one = (req, res) => {
          volunteer.verifyEmail();
 
          Mission.model
-            .find({ crew: volunteer })
+            .find({ 'crew.volunteer': volunteer })
             .select('name status start end crew area')
             .sort('-start')
-            .populate('crew', 'name')
+            .populate('crew.volunteer', 'name group')
             .populate('area')
             .exec((err2, missions) => {
                if (err2) return res.apiError(err2.detail.errmsg);

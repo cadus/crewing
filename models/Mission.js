@@ -11,7 +11,10 @@ Mission.add({
    description: { type: Types.Markdown },
    start: { type: Types.Date, default: Date.now },
    end: { type: Types.Date, default: Date.now },
-   crew: { type: Types.Relationship, ref: 'Volunteer', many: true },
+   crew: { type: Types.List, fields: {
+      volunteer: { type: Types.Relationship, ref: 'Volunteer' },
+      status: { type: Types.Select, options: 'none, pending, yes, no', default: 'none' },
+   }},
    project: { type: Types.Relationship, ref: 'Project' },
    area: { type: Types.Relationship, ref: 'Area' },
    createdAt: { type: Types.Datetime, default: Date.now },
