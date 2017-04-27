@@ -17,7 +17,6 @@ export default React.createClass({
          missions: null,
          volunteers: null,
          error: null,
-         message: null,
       };
    },
 
@@ -38,7 +37,7 @@ export default React.createClass({
             const mappedVolunteers = _.keyBy(volunteers, 'id');
             this.setState({ missions, volunteers: mappedVolunteers }, this.setAssignments);
          })
-         .catch(console.error);
+         .catch(({ error }) => this.setState({ error }));
    },
 
    setAssignments() {
@@ -48,16 +47,11 @@ export default React.createClass({
       this.setState({ assignments });
    },
 
-   setMessage(message) {
-      this.setState({ message });
-      _.delay(() => this.setState({ message: null }), 3000);
-   },
-
    updateMission(newMission) {
       const missions = this.state.missions;
       const index = _.findIndex(missions, mission => mission.id === newMission.id);
       missions[index] = newMission;
-      this.setState({ missions });
+      this.setState({ missions }, this.setAssignments);
    },
 
    render() {
@@ -80,9 +74,6 @@ export default React.createClass({
                   <img src="/images/logo.svg" height="32" alt="cadus crewing" style={{ marginTop: -10 }} />
                </Card>
             </header>
-            {this.state.message &&
-               <Alert type="success">{this.state.message}</Alert>
-            }
             {_.map(this.state.missions, mission =>
                <Mission
                   isEditable
