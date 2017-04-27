@@ -71,6 +71,8 @@ exports.create = (req, res) => {
          return res.apiError(message);
       }
 
+      const callback = () => res.apiResponse({ success: true });
+
       new Email('templates/emails/volunteer-created.jade', { transport: 'nodemailer' })
          .send({
             name: volunteer.name.first,
@@ -81,7 +83,7 @@ exports.create = (req, res) => {
             to: volunteer.email,
             subject: 'crewing account created',
             nodemailerConfig: mailConfig.nodemailerConfig,
-         }, () => res.apiResponse({ success: true }));
+         }, callback);
    });
 };
 
@@ -116,6 +118,8 @@ exports.changeToken = (req, res) => {
          volunteer.save((err2) => {
             if (err2) return res.apiError(err2.detail.errmsg);
 
+            const callback = () => res.apiResponse({ success: true });
+
             new Email('templates/emails/volunteer-token-changed.jade', { transport: 'nodemailer' })
                .send({
                   name: volunteer.name.first,
@@ -126,7 +130,7 @@ exports.changeToken = (req, res) => {
                   to: volunteer.email,
                   subject: 'crewing account login link',
                   nodemailerConfig: mailConfig.nodemailerConfig,
-               }, () => res.apiResponse({ success: true }));
+               }, callback);
          });
       });
 };

@@ -1,6 +1,6 @@
 import React from 'react';
 import _ from 'lodash';
-import { Button, Form, FormRow, FormField, FormInput, FormSelect, Checkbox, Alert, Spinner } from 'elemental';
+import { Card, Alert, Button, Form, FormRow, FormField, FormInput, FormSelect, Checkbox, Spinner } from 'elemental';
 import FileUpload from './FileUpload';
 import DateInput from './DateInput';
 import ListEditor from './ListEditor';
@@ -116,7 +116,7 @@ export default React.createClass({
       const volunteer = this.state.volunteer;
 
       return (
-         <div>
+         <Card>
             {this.state.message
                ? <Alert type={this.state.message.type}>{this.state.message.text}</Alert>
                : <Alert type="info">All blue bordered fields are required.</Alert>
@@ -325,7 +325,7 @@ export default React.createClass({
                </div>
 
             </Form>
-         </div>
+         </Card>
       );
    },
 
