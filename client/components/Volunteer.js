@@ -3,7 +3,7 @@ import _ from 'lodash';
 import { Card, Alert, ButtonGroup, Button, Spinner } from 'elemental';
 import VolunteerForm from './VolunteerForm';
 import LoginLinkForm from './LoginLinkForm';
-import Missions from './Missions';
+import Mission from './Mission';
 import * as http from '../lib/http';
 
 export default React.createClass({
@@ -42,6 +42,20 @@ export default React.createClass({
       this.setState({ isEditing: !this.state.isEditing });
    },
 
+   renderMissions() {
+      if (!this.state.missions) return null;
+
+      if (!this.state.missions.length) {
+         return <p>You're not on any missions yet.</p>;
+      }
+
+      return (
+         <div>
+            {this.state.missions.map(mission => <Mission key={mission.id} mission={mission} />)}
+         </div>
+      );
+   },
+
    render() {
       if (this.state.error) {
          return (
@@ -76,12 +90,11 @@ export default React.createClass({
             {!this.state.hasVisitedBefore && !this.state.isEditing &&
                <Alert type="info"><strong>Welcome!</strong> To edit your personal information, click on “<strong>Change Data</strong>” ↗</Alert>
             }
-            <Card>
-               {this.state.isEditing
-                  ? <VolunteerForm volunteer={this.state.volunteer} onChange={this.setVolunteer} />
-                  : <Missions missions={this.state.missions} />
-               }
-            </Card>
+
+            {this.state.isEditing
+               ? <VolunteerForm volunteer={this.state.volunteer} onChange={this.setVolunteer} />
+               : this.renderMissions()
+            }
          </div>
       );
    },
