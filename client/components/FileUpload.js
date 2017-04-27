@@ -51,6 +51,8 @@ export default React.createClass({
    },
 
    replaceDataURI(dataURI) {
+      if (!this.element) return;
+
       this.element.setState({
          dataURI,
          file: this.props.file,
