@@ -32,6 +32,7 @@ exports = module.exports = (app) => {
    app.put('/api/volunteer', keystone.middleware.api, hasToken, api.volunteers.update);
    app.post('/api/volunteer', keystone.middleware.api, api.volunteers.create);
    app.post('/api/volunteer/token', keystone.middleware.api, api.volunteers.changeToken);
+   app.put('/api/volunteer/missions/:id', keystone.middleware.api, hasToken, api.volunteers.changeMissionStatus);
 
    // Uploaded images should not be publicly accessible
    app.use('/uploads', isAdminOrOwner, express.static('uploads', { redirect: false }));

@@ -8,6 +8,10 @@ import * as http from '../lib/http';
 
 export default React.createClass({
 
+   childContextTypes: {
+      volunteer: React.PropTypes.object,
+   },
+
    getInitialState() {
       return {
          volunteer: null,
@@ -16,6 +20,12 @@ export default React.createClass({
          error: null,
          message: null,
          hasVisitedBefore: !!window.localStorage.getItem('hasVisitedBefore'),
+      };
+   },
+
+   getChildContext() {
+      return {
+         volunteer: this.state.volunteer,
       };
    },
 
@@ -42,6 +52,13 @@ export default React.createClass({
       this.setState({ isEditing: !this.state.isEditing });
    },
 
+   updateMission(newMission) {
+      const missions = this.state.missions;
+      const index = _.findIndex(missions, mission => mission.id === newMission.id);
+      missions[index] = newMission;
+      this.setState({ missions });
+   },
+
    renderMissions() {
       if (!this.state.missions) return null;
 
@@ -51,7 +68,7 @@ export default React.createClass({
 
       return (
          <div>
-            {this.state.missions.map(mission => <Mission key={mission.id} mission={mission} />)}
+            {this.state.missions.map(mission => <Mission key={mission.id} mission={mission} onChange={this.updateMission} />)}
          </div>
       );
    },

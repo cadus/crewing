@@ -1,9 +1,10 @@
 import React from 'react';
 import moment from 'moment';
 import _ from 'lodash';
-import { Card, Table, Button, Pill } from 'elemental';
+import { Alert, Card, Table, ButtonGroup, Button, Pill } from 'elemental';
 import { Map, TileLayer } from 'react-leaflet';
 import MissionForm from './MissionForm';
+import * as http from '../lib/http';
 
 const formatDate = date => moment(date).format(moment.localeData().longDateFormat('L'));
 
@@ -24,6 +25,7 @@ export default React.createClass({
 
    contextTypes: {
       volunteers: React.PropTypes.object,
+      volunteer: React.PropTypes.object,
    },
 
    getDefaultProps() {
@@ -66,6 +68,21 @@ export default React.createClass({
       this.props.onChange(mission);
    },
 
+   setMessage(text, type) {
+      this.setState({ message: { text, type } });
+      _.delay(() => this.setState({ message: null }), 5000);
+   },
+
+   setMissionState(status) {
+      const mission = this.props.mission;
+      http.put(`/api/volunteer/missions/${mission.id}?status=${status}`)
+         .then(() => {
+            mission.crew.find(a => a.volunteer.id === this.context.volunteer.id).status = status;
+            this.props.onChange(mission);
+         })
+         .catch(({ error }) => this.setMessage(error, 'danger'));
+   },
+
    toggleEdit() {
       const isEditing = !this.state.isEditing;
       this.setState({ isEditing });
@@ -104,8 +121,13 @@ export default React.createClass({
       const position = this.state.position;
       const right = { float: 'right' };
 
+      const isMyMission = this.context.volunteer && !!mission.crew.find(a => a.volunteer.id === this.context.volunteer.id);
+
       return (
          <Card>
+            {this.state.message &&
+               <Alert type={this.state.message.type}>{this.state.message.text}</Alert>
+            }
             {this.props.isEditable
                ? <Button onClick={this.toggleEdit} style={right}>Edit</Button>
                : <Pill label={mission.status} type="info" style={right} />
@@ -113,6 +135,17 @@ export default React.createClass({
             <h2>{mission.name} in {area} from {formatDate(mission.start)} till {formatDate(mission.end)}</h2>
 
             {this.renderCrew(mission.crew)}
+
+            {isMyMission &&
+               <p style={{ float: 'right' }}>
+                  Change your participation state:
+                  <ButtonGroup style={{ marginLeft: '1em' }}>
+                     <Button type="default-success" onClick={() => this.setMissionState('yes')}>Yes</Button>
+                     <Button type="default" onClick={() => this.setMissionState('pending')}>Undecided</Button>
+                     <Button type="default-danger" onClick={() => this.setMissionState('no')}>No</Button>
+                  </ButtonGroup>
+               </p>
+            }
 
             {position &&
                <Map center={position} zoom={this.state.zoom}>

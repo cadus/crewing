@@ -136,6 +136,39 @@ exports.changeToken = (req, res) => {
 };
 
 /**
+ * Change the Status of a Volunteer
+ */
+exports.changeMissionStatus = (req, res) => {
+   const token = req.token;
+   const missionID = req.params.id;
+   const newStatus = req.query.status;
+   const allowedStatus = ['pending', 'yes', 'no'];
+
+   if (!allowedStatus.includes(newStatus)) {
+      return res.apiError('not allowed');
+   }
+
+   Mission.model
+      .findById(missionID)
+      .populate('crew.volunteer', 'token')
+      .exec((err2, mission) => {
+         if (err2) return res.apiError(err2.detail.errmsg);
+         if (!mission) return res.apiError('not found');
+
+         const match = mission.crew.find(a => a.volunteer.token === token);
+
+         if (match) {
+            match.status = newStatus;
+            mission.save((err3) => {
+               if (err3) return res.apiError(err3.detail.errmsg);
+               res.apiResponse({ success: true });
+            });
+         }
+         else res.apiError('not found');
+      });
+};
+
+/**
  * Delete Volunteer by ID
  */
 exports.remove = (req, res) => {
