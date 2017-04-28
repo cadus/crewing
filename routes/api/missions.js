@@ -5,6 +5,8 @@ const mailConfig = require('../../config').mail;
 const Volunteer = keystone.list('Volunteer');
 const Mission = keystone.list('Mission');
 
+const isDevelopment = process.env.KEYSTONE_DEV === 'true';
+
 /**
  * List all Missions
  */
@@ -123,6 +125,11 @@ exports.update = (req, res) => {
 };
 
 function sendEmail(to, subject, data) {
+   if (isDevelopment) {
+      console.log('SEND MAIL', subject, to);
+      return new Promise.resolve();
+   }
+
    const options = {
       to,
       subject,
