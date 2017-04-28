@@ -2,7 +2,7 @@
    "Questions": {
       "q_healthy": "Are you healthy and in good fitness? Are there any health restrictions / handicaps?",
       "q_medication": "Do you take any medication? If yes, which ones?",
-      "q_condition": "Have you every been in exceptional psychological condition?",
+      "q_condition": "Have you ever been in exceptional psychological condition?",
       "q_biography": "In your biography, are there any particularly stressful life events? Are there traumas? Please state them briefly – no explanations / stories.",
       "q_treatment": "Are you / have you ever been in psychiatric / psychotherapeutic treatment?",
       "q_substances": "Is there any substance use for stabilisation in situations of crisis? If yes, which substances?"
