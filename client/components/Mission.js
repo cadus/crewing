@@ -138,7 +138,7 @@ export default React.createClass({
             {this.renderCrew(mission.crew)}
 
             {isMyMission &&
-               <div style={{ float: 'right', marginBottom: '1em' }}>
+               <div style={{ textAlign: 'right', marginBottom: '1em' }}>
                   Change your participation state:
                   <ButtonGroup style={{ marginLeft: '1em' }}>
                      <Button type="default-success" onClick={() => this.setMissionState('yes')}>Yes</Button>
