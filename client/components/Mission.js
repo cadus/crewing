@@ -56,7 +56,8 @@ export default React.createClass({
          const query = _.map(_.pick(location, fields), part => part ? part.replace(/\s/g, '+') : '').join(',+');
          const url = `https://nominatim.openstreetmap.org/search?q=${query}&format=json`;
          fetch(url).then(response => response.json()).then((result) => {
-            const first = _.first(result) || {};
+            if (!result.length) return;
+            const first = _.first(result);
             const position = [+first.lat, +first.lon];
             this.setState({ position });
          });
