@@ -23,9 +23,9 @@ exports = module.exports = (app) => {
    app.get('/volunteer/:token', api.volunteers.setToken);
 
    app.get('/api/missions', keystone.middleware.api, isAdmin, api.missions.all);
-   app.post('/api/missions', keystone.middleware.api, api.missions.create);
-   app.get('/api/missions/:id', keystone.middleware.api, hasToken, api.missions.one);
-   app.put('/api/missions/:id', keystone.middleware.api, hasToken, api.missions.update);
+   app.post('/api/missions', keystone.middleware.api, isAdmin, api.missions.create);
+   app.get('/api/missions/:id', keystone.middleware.api, isAdmin, api.missions.one);
+   app.put('/api/missions/:id', keystone.middleware.api, isAdmin, api.missions.update);
 
    app.get('/api/volunteers', keystone.middleware.api, isAdmin, api.volunteers.all);
    app.get('/api/volunteer', keystone.middleware.api, hasToken, api.volunteers.one);
