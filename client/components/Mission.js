@@ -138,14 +138,14 @@ export default React.createClass({
             {this.renderCrew(mission.crew)}
 
             {isMyMission &&
-               <p style={{ float: 'right' }}>
+               <div style={{ float: 'right', marginBottom: '1em' }}>
                   Change your participation state:
                   <ButtonGroup style={{ marginLeft: '1em' }}>
                      <Button type="default-success" onClick={() => this.setMissionState('yes')}>Yes</Button>
                      <Button type="default" onClick={() => this.setMissionState('pending')}>Undecided</Button>
                      <Button type="default-danger" onClick={() => this.setMissionState('no')}>No</Button>
                   </ButtonGroup>
-               </p>
+               </div>
             }
 
             {position &&
