@@ -16,6 +16,7 @@ export default React.createClass({
 
    propTypes: {
       assignment: React.PropTypes.object.isRequired,
+      mission: React.PropTypes.object.isRequired,
       onChange: React.PropTypes.func,
       onRemove: React.PropTypes.func,
    },
@@ -35,17 +36,39 @@ export default React.createClass({
 
    getInitialState() {
       const group = (this.context.volunteers[this.props.assignment.volunteer] || {}).group;
-      const volunteers = this.getVolunteersByGroup(group);
-      return { group, volunteers };
+      return { group };
    },
 
-   getVolunteersByGroup(group) {
-      return _.filter(this.context.volunteers, volunteer => group === volunteer.group);
+   componentDidMount() {
+      this.setSuitableVolunteers();
+   },
+
+   componentWillReceiveProps(nextProps) {
+      this.setSuitableVolunteers(nextProps.mission);
+   },
+
+   setSuitableVolunteers(mission = this.props.mission) {
+      const group = this.state.group;
+      const now = new Date();
+      const start = new Date(mission.start);
+      const end = new Date(mission.end);
+
+      const isAvailable = av => (
+         new Date(av.confirmationTill) >= now &&
+         new Date(av.from) <= start &&
+         new Date(av.till) >= end
+      );
+
+      const volunteers = _.filter(this.context.volunteers, volunteer =>
+         group === volunteer.group &&
+         volunteer.availabilities.length &&
+         volunteer.availabilities.find(isAvailable));
+
+      this.setState({ volunteers });
    },
 
    changeGroup({ value }) {
-      const volunteers = this.getVolunteersByGroup(value);
-      this.setState({ group: value, volunteers });
+      this.setState({ group: value }, this.setSuitableVolunteers);
    },
 
    changeName({ value }) {

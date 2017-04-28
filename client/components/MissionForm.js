@@ -117,6 +117,7 @@ export default React.createClass({
                   <VolunteerGroupSelect
                      key={assignment.volunteer}
                      assignment={assignment}
+                     mission={this.state.mission}
                      onChange={onChange(assignment.volunteer)}
                      onRemove={onRemove(assignment.volunteer)}
                   />
