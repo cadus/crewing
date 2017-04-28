@@ -85,21 +85,21 @@ export default React.createClass({
 
       if (_.isEmpty(crew)) return null;
 
-      const onChange = oldVolunteerID => newVolunteerID => {
+      const addMember = () => {
+         crew.push({ status: 'none', volunteer: _.uniqueId() });
+         this.setState({ mission });
+      };
+
+      const changeMember = oldVolunteerID => newVolunteerID => {
          const assignment = _.find(mission.crew, a => a.volunteer === oldVolunteerID);
          assignment.status = 'none';
          assignment.volunteer = newVolunteerID;
          this.setState({ mission });
       };
 
-      const onRemove = volunteerID => () => {
+      const removeMember = volunteerID => () => {
          _.remove(crew, n => n.volunteer === volunteerID);
-         this.setState({ mission });
-      };
-
-      const addMember = () => {
-         crew.push({ status: 'none', volunteer: _.uniqueId() });
-         this.setState({ mission });
+         this.setState({ mission }, (crew.length ? _.noop : addMember));
       };
 
       return (
@@ -118,8 +118,8 @@ export default React.createClass({
                      key={assignment.volunteer}
                      assignment={assignment}
                      mission={this.state.mission}
-                     onChange={onChange(assignment.volunteer)}
-                     onRemove={onRemove(assignment.volunteer)}
+                     onChange={changeMember(assignment.volunteer)}
+                     onRemove={removeMember(assignment.volunteer)}
                   />
                )}
             </tbody>
