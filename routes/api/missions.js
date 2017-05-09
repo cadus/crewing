@@ -98,13 +98,13 @@ exports.update = (req, res) => {
                         };
 
                         if (data.added.includes(volunteer.id)) {
-                           values.reason = 'You\'ve been added to a mission';
+                           values.reason = 'you\'ve been added to a mission';
                         }
                         else if (data.removed.includes(volunteer.id)) {
-                           values.reason = 'You\'ve been removed from a mission';
+                           values.reason = 'you\'ve been removed from a mission';
                         }
                         else { // unchanged
-                           values.reason = 'The date of a mission changed';
+                           values.reason = 'the date of a mission changed';
                         }
 
                         const subject = `cadus crewing | ${values.reason}`;
