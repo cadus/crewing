@@ -1,4 +1,5 @@
 const babelify = require('babelify');
+const browserifycss = require('browserify-css');
 const browserify = require('browserify-middleware');
 const express = require('express');
 const path = require('path');
@@ -19,6 +20,7 @@ exports = module.exports = (app) => {
    app.get('/', (req, res) => res.render('react', { page: 'signup' }));
    app.get('/missions', (req, res) => res.render('react', { page: 'missions' }));
    app.get('/volunteer', (req, res) => res.render('react', { page: 'volunteer' }));
+   app.get('/availabilities', (req, res) => res.render('react', { page: 'availabilities' }));
 
    app.get('/volunteer/:token', api.volunteers.setToken);
 
@@ -42,8 +44,12 @@ exports = module.exports = (app) => {
 
    // Serve script bundles
    app.use('/js', browserify('./client/pages', {
+      debug: true,
       external: commonPackages,
-      transform: [babelify.configure({ presets: ['es2015', 'react', 'stage-3'] })],
+      transform: [
+         [browserifycss, { global: true }],
+         [babelify.configure({ presets: ['es2015', 'react', 'stage-3'] })],
+      ],
    }));
 
    app.disable('x-powered-by');

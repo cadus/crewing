@@ -139,6 +139,10 @@ export default React.createClass({
                <Alert type={this.state.message.type}>{this.state.message.text}</Alert>
             }
 
+            <div style={{ textAlign: 'right' }}>
+               <a href={`/availabilities?start=${+new Date(mission.start)}&end=${+new Date(mission.end)}`} target="_blank">Availabilities</a>
+            </div>
+
             <Form onChange={this.onChange} onSubmit={this.onSubmit}>
 
                <FormField label="Name">

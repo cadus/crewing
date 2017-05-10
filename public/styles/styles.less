@@ -48,3 +48,34 @@ footer {
    height: 400px;
    width: 100%;
 }
+
+
+// Timeline
+
+body .react-calendar-timeline {
+   .rct-sidebar .rct-sidebar-header {
+      background: transparent url(/images/logo.svg) center no-repeat;
+      background-size: 80%;
+   }
+
+   .rct-header .rct-label-group,
+   .rct-header .rct-label.rct-label-only { // gray
+      background-color: #e0e0e0;
+      color: #333;
+   }
+
+   .rct-items .rct-item.available { // green
+      background-color: #388e3c;
+   }
+
+   .rct-items .rct-item.expired { // orange
+      background-color: #fb8c00;
+   }
+
+   .rct-items .rct-item.unavailable { // gray
+      background-color: #eee;
+      border-color: #757575;
+      color: #757575;
+   }
+}
+
