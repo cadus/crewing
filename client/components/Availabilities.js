@@ -50,7 +50,7 @@ export default React.createClass({
             end_time: moment(av.till),
             id: av._id,
             group: volunteer.group,
-            title: 'Name' || `${volunteer.name.first || ''} ${volunteer.name.last || ''}`.trim(),
+            title: `${volunteer.name.first || ''} ${volunteer.name.last || ''}`.trim(),
             className,
          });
       }));
