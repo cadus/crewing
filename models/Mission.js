@@ -15,6 +15,7 @@ Mission.add({
       volunteer: { type: Types.Relationship, ref: 'Volunteer' },
       status: { type: Types.Select, options: 'none, pending, yes, no', default: 'none' },
    }},
+   headOfMission: { type: Types.Relationship, ref: 'Volunteer' },
    project: { type: Types.Relationship, ref: 'Project' },
    area: { type: Types.Relationship, ref: 'Area' },
    createdAt: { type: Types.Datetime, default: Date.now },

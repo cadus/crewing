@@ -121,6 +121,8 @@ export default React.createClass({
       const area = mission.area ? mission.area.name : '';
       const position = this.state.position;
       const right = { float: 'right' };
+      let headOfMission = this.context.volunteers[this.props.mission.headOfMission] || {};
+      headOfMission = headOfMission.name ? `${headOfMission.name.first} ${headOfMission.name.last}` : 'none yet';
 
       const isMyMission = this.context.volunteer && !!mission.crew.find(a => a.volunteer.id === this.context.volunteer.id);
 
@@ -134,6 +136,8 @@ export default React.createClass({
                : <Pill label={mission.status} type="info" style={right} />
             }
             <h2>{mission.name} in {area} from {formatDate(mission.start)} till {formatDate(mission.end)}</h2>
+
+            <h4>Head of Mission: {headOfMission}</h4>
 
             {this.renderCrew(mission.crew)}
 

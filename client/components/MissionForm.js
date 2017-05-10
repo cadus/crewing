@@ -1,6 +1,7 @@
 import React from 'react';
 import _ from 'lodash';
 import { Alert, Button, Form, FormRow, FormField, FormInput, Table, Spinner } from 'elemental';
+import Select from 'react-select';
 import DateInput from './DateInput';
 import VolunteerGroupSelect from './VolunteerGroupSelect';
 import * as http from '../lib/http';
@@ -129,6 +130,8 @@ export default React.createClass({
 
    render() {
       const mission = this.state.mission;
+      const getOption = v => ({ value: v.id, label: `${v.name.first || ''} ${v.name.last || ''}` });
+      const currentVolunteers = mission.crew.map(a => getOption(this.context.volunteers[a.volunteer]));
 
       return (
          <div>
@@ -164,6 +167,19 @@ export default React.createClass({
                </FormRow>
 
                {this.renderCrew(mission)}
+
+               <FormRow>
+                  <FormField label="Head of Mission" width="one-half">
+                     <Select
+                        options={currentVolunteers}
+                        value={mission.headOfMission}
+                        onChange={({ value }) => this.onChange({ name: 'headOfMission', value })}
+                        clearable={false}
+                        backspaceRemoves={false}
+                        deleteRemoves={false}
+                     />
+                  </FormField>
+               </FormRow>
 
                <div style={{ textAlign: 'center', marginTop: '1rem' }}>
                   <Button type="primary" submit style={{ padding: '0 2rem' }}>
