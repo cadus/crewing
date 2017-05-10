@@ -42,7 +42,7 @@ export default React.createClass({
 
       _.each(this.state.volunteers, volunteer => _.each(volunteer.availabilities, (av) => {
          const className = new Date(av.from) <= start && new Date(av.till) >= end
-            ? new Date(av.confirmationTill) >= now ? 'available' : 'expired'
+            ? new Date(av.confirmationTill ||  now) >= now ? 'available' : 'expired'
             : 'unavailable';
 
          items.push({

@@ -54,7 +54,7 @@ export default React.createClass({
       const end = new Date(mission.end);
 
       const isAvailable = av => (
-         new Date(av.confirmationTill) >= now &&
+         new Date(av.confirmationTill || now) >= now &&
          new Date(av.from) <= start &&
          new Date(av.till) >= end
       );
