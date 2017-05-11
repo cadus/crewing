@@ -2,7 +2,7 @@ import React from 'react';
 import _ from 'lodash';
 import Timeline from 'react-calendar-timeline';
 import moment from 'moment';
-import { Spinner } from 'elemental';
+import { Alert, Spinner } from 'elemental';
 import * as http from '../lib/http';
 import groupsJSON from '../../shared/groups.json';
 
@@ -25,12 +25,14 @@ export default React.createClass({
          items: [],
          groups: [],
          volunteers: null,
+         error: null,
       };
    },
 
    componentDidMount() {
       http.get('/api/volunteers')
-         .then(({ volunteers }) => this.setState({ volunteers }, this.generateItems));
+         .then(({ volunteers }) => this.setState({ volunteers }, this.generateItems))
+         .catch(({ error }) => this.setState({ error }));
    },
 
    generateItems() {
@@ -59,6 +61,14 @@ export default React.createClass({
    },
 
    render() {
+      if (this.state.error) {
+         return (
+            <div className="container" style={{ marginTop: 100 }}>
+               <Alert type="danger"><strong>Error:</strong> {this.state.error}</Alert>
+            </div>
+         );
+      }
+
       if (this.state.volunteers === null) {
          return <div style={{ marginTop: 100, textAlign: 'center' }}><Spinner size="lg" /></div>;
       }
