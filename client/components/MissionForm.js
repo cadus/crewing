@@ -84,8 +84,6 @@ export default React.createClass({
    renderCrew(mission) {
       const crew = mission.crew;
 
-      if (_.isEmpty(crew)) return null;
-
       const addMember = () => {
          crew.push({ status: 'none', volunteer: _.uniqueId() });
          this.setState({ mission });
@@ -104,7 +102,7 @@ export default React.createClass({
       };
 
       return (
-         <Table style={{ tableLayout: 'fixed' }}>
+         <Table style={{ tableLayout: 'fixed', marginBottom: '1rem' }}>
             <thead>
                <tr>
                   <th>Status</th><th>Group</th><th>Name (Einsätze)</th>
@@ -131,7 +129,10 @@ export default React.createClass({
    render() {
       const mission = this.state.mission;
       const getOption = v => ({ value: v.id, label: `${v.name.first || ''} ${v.name.last || ''}` });
-      const currentVolunteers = mission.crew.map(a => getOption(this.context.volunteers[a.volunteer]));
+      const currentVolunteers = mission.crew
+         .map(a => this.context.volunteers[a.volunteer])
+         .filter(Boolean) // remove unfinished selections
+         .map(getOption);
 
       return (
          <div>
