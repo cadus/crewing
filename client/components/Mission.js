@@ -121,8 +121,9 @@ export default React.createClass({
       const area = mission.area ? mission.area.name : '';
       const position = this.state.position;
       const right = { float: 'right' };
-      let headOfMission = this.context.volunteers[this.props.mission.headOfMission] || {};
-      headOfMission = headOfMission.name ? `${headOfMission.name.first} ${headOfMission.name.last}` : 'none yet';
+
+      let headOfMission = this.context.volunteers ? this.context.volunteers[this.props.mission.headOfMission] : {};
+      headOfMission = headOfMission.name ? `${headOfMission.name.first} ${headOfMission.name.last}` : '';
 
       const isMyMission = this.context.volunteer && !!mission.crew.find(a => a.volunteer.id === this.context.volunteer.id);
 
@@ -131,15 +132,17 @@ export default React.createClass({
             {this.state.message &&
                <Alert type={this.state.message.type}>{this.state.message.text}</Alert>
             }
+
             {this.props.isEditable
                ? <Button onClick={this.toggleEdit} style={right}>Edit</Button>
                : <Pill label={mission.status} type="info" style={right} />
             }
-            <h2>{mission.name} in {area} from {formatDate(mission.start)} till {formatDate(mission.end)}</h2>
 
-            <h4>Head of Mission: {headOfMission}</h4>
+            <h2>{mission.name} {area && `in ${area}`} from {formatDate(mission.start)} till {formatDate(mission.end)}</h2>
 
-            {this.renderCrew(mission.crew)}
+            {headOfMission &&
+               <h4>Head of Mission: {headOfMission}</h4>
+            }
 
             {isMyMission &&
                <div style={{ textAlign: 'right', marginBottom: '1em' }}>
@@ -151,6 +154,8 @@ export default React.createClass({
                   </ButtonGroup>
                </div>
             }
+
+            {this.renderCrew(mission.crew)}
 
             {position &&
                <Map center={position} zoom={this.state.zoom}>
