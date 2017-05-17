@@ -6,7 +6,6 @@ import _ from 'lodash';
 export default React.createClass({
 
    propTypes: {
-      name: React.PropTypes.string.isRequired,
       onChange: React.PropTypes.func.isRequired,
       defaultValue: React.PropTypes.oneOfType([React.PropTypes.string, React.PropTypes.object]),
    },

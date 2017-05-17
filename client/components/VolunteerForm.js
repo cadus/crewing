@@ -72,7 +72,6 @@ export default React.createClass({
 
    onSubmit(event) {
       event.preventDefault();
-
       this.setState({ isSubmitting: true });
 
       const oldVolunteer = this.props.volunteer;

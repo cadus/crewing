@@ -126,8 +126,8 @@ exports.update = (req, res) => {
 
 function sendEmail(to, subject, data) {
    if (isDevelopment) {
-      console.log('SEND MAIL', subject, to);
-      return new Promise.resolve();
+      console.log('SEND MAIL "', subject, '"\nTO', to);
+      return Promise.resolve();
    }
 
    const options = {
