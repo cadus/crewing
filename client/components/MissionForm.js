@@ -1,5 +1,6 @@
 import React from 'react';
 import _ from 'lodash';
+import moment from 'moment';
 import { Alert, Button, Form, FormRow, FormField, FormInput, Table, Spinner } from 'elemental';
 import Select from 'react-select';
 import DateInput from './DateInput';
@@ -134,6 +135,9 @@ export default React.createClass({
          .filter(Boolean) // remove unfinished selections
          .map(getOption);
 
+      const start = moment(mission.start);
+      const end = moment(mission.end);
+
       return (
          <div>
             {this.state.message &&
@@ -155,17 +159,21 @@ export default React.createClass({
                <FormRow>
                   <FormField label="Start" width="one-half">
                      <DateInput
-                        name="start"
                         required
-                        defaultValue={mission.start}
+                        selectsStart
+                        startDate={start}
+                        endDate={end}
+                        defaultValue={start}
                         onChange={value => this.onChange({ name: 'start', value })}
                      />
                   </FormField>
                   <FormField label="End" width="one-half">
                      <DateInput
-                        name="end"
                         required
-                        defaultValue={mission.end}
+                        selectsEnd
+                        startDate={start}
+                        endDate={end}
+                        defaultValue={end}
                         onChange={value => this.onChange({ name: 'end', value })}
                      />
                   </FormField>
