@@ -122,7 +122,7 @@ export default React.createClass({
       const position = this.state.position;
       const right = { float: 'right' };
 
-      let headOfMission = this.context.volunteers ? this.context.volunteers[this.props.mission.headOfMission] : {};
+      let headOfMission = this.context.volunteers && this.context.volunteers[this.props.mission.headOfMission] || {};
       headOfMission = headOfMission.name ? `${headOfMission.name.first} ${headOfMission.name.last}` : '';
 
       const isMyMission = this.context.volunteer && !!mission.crew.find(a => a.volunteer.id === this.context.volunteer.id);
