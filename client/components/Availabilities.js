@@ -28,7 +28,7 @@ export default React.createClass({
          end: this.props.end,
          items: [],
          groups: groupsJSON.map(name => ({ id: name, title: _.startCase(name), isActive: true })),
-         showSettings: true,
+         showSettings: false,
          isDrafting: false,
          volunteers: null,
          error: null,
