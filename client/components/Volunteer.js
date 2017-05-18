@@ -77,7 +77,7 @@ export default React.createClass({
       if (this.state.error) {
          return (
             <div className="container" style={{ marginTop: 100 }}>
-               <Alert type="danger"><strong>Error:</strong> {this.state.error}</Alert>
+               <Alert type="danger"><strong>Error:</strong> {this.state.error || 'Something went wrong.'}</Alert>
             </div>
          );
       }
