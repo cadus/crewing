@@ -2,6 +2,7 @@ const name = 'cadus crewing';
 
 exports.options = {
    'name': name,
+   'url': process.env.URL || 'http://localhost',
    'less': 'public',
    'static': 'public',
    'favicon': 'public/favicon.ico',

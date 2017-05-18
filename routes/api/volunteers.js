@@ -85,8 +85,7 @@ exports.create = (req, res) => {
       const subject = 'crewing account created';
       const values = {
          name: volunteer.name.first,
-         link: `/volunteer/${volunteer.token}`,
-         host: `${req.protocol}://${req.get('host')}`,
+         path: `/volunteer/${volunteer.token}`,
       };
 
       sendEmail(volunteer.email, subject, values)
@@ -129,8 +128,7 @@ exports.changeToken = (req, res) => {
             const subject = 'crewing account login link';
             const values = {
                name: volunteer.name.first,
-               link: `/volunteer/${volunteer.token}`,
-               host: `${req.protocol}://${req.get('host')}`,
+               path: `/volunteer/${volunteer.token}`,
             };
 
             sendEmail(volunteer.email, subject, values)
@@ -174,8 +172,6 @@ exports.changeMissionStatus = (req, res) => {
                   const values = {
                      name: volunteer.name.first,
                      content: mission.commitmentMessage.md,
-                     link: '/volunteer/',
-                     host: `${req.protocol}://${req.get('host')}`,
                   };
 
                   sendEmail(volunteer.email, subject, values)

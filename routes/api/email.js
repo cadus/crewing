@@ -17,8 +17,6 @@ exports.send = (req, res) => {
             const values = {
                name: volunteer.name.first,
                content: req.body.content,
-               link: '/volunteer/',
-               host: `${req.protocol}://${req.get('host')}`,
             };
 
             return sendEmail(volunteer.email, req.body.subject, values);

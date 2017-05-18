@@ -12,6 +12,8 @@ module.exports = (template = defaultTemplate) => (recipient, subject, data) => {
    }
 
    data.markdown = markdown;
+   data.host = config.options.url;
+   data.link = data.host + (data.path || '/volunteer/');
 
    const templatePath = `templates/emails/${template}`;
    const options = {

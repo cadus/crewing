@@ -90,8 +90,6 @@ exports.update = (req, res) => {
                            mission: mission.name,
                            start: new Date(mission.start).toDateString(),
                            end: new Date(mission.end).toDateString(),
-                           link: '/volunteer/',
-                           host: `${req.protocol}://${req.get('host')}`,
                         };
 
                         if (data.added.includes(volunteer.id)) {
