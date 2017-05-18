@@ -1,7 +1,6 @@
 const keystone = require('keystone');
 const utils = require('keystone-utils');
-const Email = require('keystone-email');
-const mailConfig = require('../../config').mail;
+const email = require('../email-helper');
 
 const Volunteer = keystone.list('Volunteer');
 const Mission = keystone.list('Mission');
@@ -82,19 +81,16 @@ exports.create = (req, res) => {
          return res.apiError(message);
       }
 
-      const callback = () => res.apiResponse({ success: true });
+      const sendEmail = email('volunteer-created.jade');
+      const subject = 'crewing account created';
+      const values = {
+         name: volunteer.name.first,
+         link: `/volunteer/${volunteer.token}`,
+         host: `${req.protocol}://${req.get('host')}`,
+      };
 
-      new Email('templates/emails/volunteer-created.jade', { transport: 'nodemailer' })
-         .send({
-            name: volunteer.name.first,
-            link: `/volunteer/${volunteer.token}`,
-            host: `${req.protocol}://${req.get('host')}`,
-         }, {
-            from: mailConfig.sender,
-            to: volunteer.email,
-            subject: 'crewing account created',
-            nodemailerConfig: mailConfig.nodemailerConfig,
-         }, callback);
+      sendEmail(volunteer.email, subject, values)
+         .then(() => res.apiResponse({ success: true }));
    });
 };
 
@@ -129,19 +125,16 @@ exports.changeToken = (req, res) => {
          volunteer.save((err2) => {
             if (err2) return res.apiError(err2.detail.errmsg);
 
-            const callback = () => res.apiResponse({ success: true });
+            const sendEmail = email('volunteer-token-changed.jade');
+            const subject = 'crewing account login link';
+            const values = {
+               name: volunteer.name.first,
+               link: `/volunteer/${volunteer.token}`,
+               host: `${req.protocol}://${req.get('host')}`,
+            };
 
-            new Email('templates/emails/volunteer-token-changed.jade', { transport: 'nodemailer' })
-               .send({
-                  name: volunteer.name.first,
-                  link: `/volunteer/${volunteer.token}`,
-                  host: `${req.protocol}://${req.get('host')}`,
-               }, {
-                  from: mailConfig.sender,
-                  to: volunteer.email,
-                  subject: 'crewing account login link',
-                  nodemailerConfig: mailConfig.nodemailerConfig,
-               }, callback);
+            sendEmail(volunteer.email, subject, values)
+               .then(() => res.apiResponse({ success: true }));
          });
       });
 };

@@ -2,7 +2,6 @@ const name = 'cadus crewing';
 
 exports.options = {
    'name': name,
-   'brand': name,
    'less': 'public',
    'static': 'public',
    'favicon': 'public/favicon.ico',

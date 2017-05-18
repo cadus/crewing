@@ -1,11 +1,7 @@
 const keystone = require('keystone');
-const Email = require('keystone-email');
-const mailConfig = require('../../config').mail;
-const markdown = require('marked');
+const sendEmail = require('../email-helper')('blank.jade');
 
 const Volunteer = keystone.list('Volunteer');
-
-const isDevelopment = process.env.KEYSTONE_DEV === 'true';
 
 exports.send = (req, res) => {
    const recipients = req.body.recipients.split(',');
@@ -18,15 +14,14 @@ exports.send = (req, res) => {
          if (err) return res.apiError(err.detail.errmsg);
 
          const promises = volunteers.map((volunteer) => {
-            const subject = `cadus crewing | ${req.body.subject}`;
             const values = {
+               name: volunteer.name.first,
                content: req.body.content,
-               volunteer: volunteer.name.first,
-               host: `${req.protocol}://${req.get('host')}`,
                link: '/volunteer/',
+               host: `${req.protocol}://${req.get('host')}`,
             };
 
-            return sendEmail(volunteer.email, subject, values);
+            return sendEmail(volunteer.email, req.body.subject, values);
          });
 
          Promise.all(promises)
@@ -34,23 +29,3 @@ exports.send = (req, res) => {
             .catch(() => res.apiError('couldn\'t send all emails'));
       });
 };
-
-function sendEmail(to, subject, data) {
-   if (isDevelopment) {
-      console.log('SEND MAIL "', subject, '"\nTO', to, '\n\n', markdown(data.content));
-      return Promise.resolve();
-   }
-
-   data.markdown = markdown;
-
-   const options = {
-      to,
-      subject,
-      from: mailConfig.sender,
-      nodemailerConfig: mailConfig.nodemailerConfig,
-   };
-   const template = 'templates/emails/blank.jade';
-
-   return new Promise(resolve => new Email(template, { transport: 'nodemailer' })
-      .send(data, options, resolve));
-}

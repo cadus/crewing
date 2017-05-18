@@ -1,7 +1,9 @@
 extends layouts/base
 
 block content
-   p Hi #{volunteer},
+   p Hi #{name},
+
    != markdown(content)
+
    p For more, have a look at your dashboard:
    a(href=host + link)= host + link

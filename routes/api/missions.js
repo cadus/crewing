@@ -1,11 +1,8 @@
 const keystone = require('keystone');
-const Email = require('keystone-email');
-const mailConfig = require('../../config').mail;
+const sendEmail = require('../email-helper')('volunteer-mission-changed.jade');
 
 const Volunteer = keystone.list('Volunteer');
 const Mission = keystone.list('Mission');
-
-const isDevelopment = process.env.KEYSTONE_DEV === 'true';
 
 /**
  * List all Missions
@@ -89,12 +86,12 @@ exports.update = (req, res) => {
                   .exec((err3, volunteers) => {
                      const promises = volunteers.map((volunteer) => {
                         const values = {
-                           volunteer: volunteer.name.first,
+                           name: volunteer.name.first,
                            mission: mission.name,
                            start: new Date(mission.start).toDateString(),
                            end: new Date(mission.end).toDateString(),
-                           host: `${req.protocol}://${req.get('host')}`,
                            link: '/volunteer/',
+                           host: `${req.protocol}://${req.get('host')}`,
                         };
 
                         if (data.added.includes(volunteer.id)) {
@@ -107,9 +104,7 @@ exports.update = (req, res) => {
                            values.reason = 'the date of a mission changed';
                         }
 
-                        const subject = `cadus crewing | ${values.reason}`;
-
-                        return sendEmail(volunteer.email, subject, values);
+                        return sendEmail(volunteer.email, values.reason, values);
                      });
 
                      Promise.all(promises)
@@ -123,21 +118,3 @@ exports.update = (req, res) => {
          });
       });
 };
-
-function sendEmail(to, subject, data) {
-   if (isDevelopment) {
-      console.log('SEND MAIL "', subject, '"\nTO', to);
-      return Promise.resolve();
-   }
-
-   const options = {
-      to,
-      subject,
-      from: mailConfig.sender,
-      nodemailerConfig: mailConfig.nodemailerConfig,
-   };
-   const template = 'templates/emails/volunteer-mission-changed.jade';
-
-   return new Promise(resolve => new Email(template, { transport: 'nodemailer' })
-      .send(data, options, resolve));
-}
