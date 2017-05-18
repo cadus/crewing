@@ -45,16 +45,27 @@ exports.one = (req, res) => {
 
          Mission.model
             .find({ 'crew.volunteer': volunteer })
-            .select('name status start end crew area')
+            .select('name status start end crew area commitmentMessage')
             .sort('-start')
             .populate('crew.volunteer', 'name group')
             .populate('area')
-            .exec((err2, missions) => {
+            .exec((err2, mongoMissions) => {
                if (err2) return res.apiError(err2.detail.errmsg);
+               const missions = filterCommitmentMessage(mongoMissions, volunteer);
                res.apiResponse({ volunteer, missions });
             });
       });
 };
+
+// only committed volunteers should see the commitment message
+function filterCommitmentMessage(mongoMissions, volunteer) {
+   const missions = mongoMissions.map(mission => mission.toJSON());
+   const me = assignment => assignment.volunteer.id.toJSON() === volunteer.id;
+   missions
+      .filter(mission => mission.crew.find(me).status !== 'yes')
+      .forEach(mission => delete mission.commitmentMessage);
+   return missions;
+}
 
 /**
  * Create a Volunteer
@@ -150,7 +161,7 @@ exports.changeMissionStatus = (req, res) => {
 
    Mission.model
       .findById(missionID)
-      .populate('crew.volunteer', 'token')
+      .populate('crew.volunteer', 'token name email')
       .exec((err2, mission) => {
          if (err2) return res.apiError(err2.detail.errmsg);
          if (!mission) return res.apiError('not found');
@@ -161,7 +172,26 @@ exports.changeMissionStatus = (req, res) => {
             match.status = newStatus;
             mission.save((err3) => {
                if (err3) return res.apiError(err3.detail.errmsg);
-               res.apiResponse({ success: true });
+
+               if (newStatus === 'yes') {
+
+                  const sendEmail = email('volunteer-commitment-message.jade');
+                  const volunteer = match.volunteer;
+                  const subject = 'welcome on board';
+                  const values = {
+                     name: volunteer.name.first,
+                     content: mission.commitmentMessage.md,
+                     link: '/volunteer/',
+                     host: `${req.protocol}://${req.get('host')}`,
+                  };
+
+                  sendEmail(volunteer.email, subject, values)
+                     .then(() => res.apiResponse({
+                        success: true,
+                        commitmentMessage: mission.commitmentMessage,
+                     }));
+               }
+               else res.apiResponse({ success: true });
             });
          }
          else res.apiError('not found');

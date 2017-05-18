@@ -9,6 +9,7 @@ Mission.add({
    name: { type: String, initial: true, required: true, index: true },
    status: { type: Types.Select, options: 'open, on hold, confirmed, cancelled', default: 'open' },
    description: { type: Types.Markdown },
+   commitmentMessage: { type: Types.Markdown },
    start: { type: Types.Date, default: Date.now },
    end: { type: Types.Date, default: Date.now },
    crew: { type: Types.List, fields: {

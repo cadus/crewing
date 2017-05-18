@@ -77,7 +77,8 @@ export default React.createClass({
    setMissionState(status) {
       const mission = this.props.mission;
       http.put(`/api/volunteer/missions/${mission.id}?status=${status}`)
-         .then(() => {
+         .then((result) => {
+            mission.commitmentMessage = result.commitmentMessage;
             mission.crew.find(a => a.volunteer.id === this.context.volunteer.id).status = status;
             this.props.onChange(mission);
          })
@@ -121,6 +122,8 @@ export default React.createClass({
       const area = mission.area ? mission.area.name : '';
       const position = this.state.position;
       const right = { float: 'right' };
+      const myStatus = mission.crew.find(a => a.volunteer.id === this.context.volunteer.id).status;
+      const buttonClass = status => status === myStatus ? 'default-primary' : 'default';
 
       let headOfMission = this.context.volunteers && this.context.volunteers[this.props.mission.headOfMission] || {};
       headOfMission = headOfMission.name ? `${headOfMission.name.first} ${headOfMission.name.last}` : '';
@@ -148,9 +151,9 @@ export default React.createClass({
                <div style={{ textAlign: 'right', marginBottom: '1em' }}>
                   Change your participation state:
                   <ButtonGroup style={{ marginLeft: '1em' }}>
-                     <Button type="default-success" onClick={() => this.setMissionState('yes')}>Yes</Button>
-                     <Button type="default" onClick={() => this.setMissionState('pending')}>Undecided</Button>
-                     <Button type="default-danger" onClick={() => this.setMissionState('no')}>No</Button>
+                     <Button type={buttonClass('yes')} onClick={() => this.setMissionState('yes')}>Yes</Button>
+                     <Button type={buttonClass('pending')} onClick={() => this.setMissionState('pending')}>Undecided</Button>
+                     <Button type={buttonClass('no')} onClick={() => this.setMissionState('no')}>No</Button>
                   </ButtonGroup>
                </div>
             }
@@ -161,6 +164,14 @@ export default React.createClass({
                <Map center={position} zoom={this.state.zoom}>
                   <TileLayer url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" />
                </Map>
+            }
+
+            {mission.commitmentMessage &&
+               <div>
+                  <hr />
+                  <h2>Mission Information</h2>
+                  <div dangerouslySetInnerHTML={{ __html: mission.commitmentMessage.html }} />
+               </div>
             }
          </Card>
       );

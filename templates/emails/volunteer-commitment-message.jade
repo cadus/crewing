@@ -1,0 +1,10 @@
+extends layouts/base
+
+block content
+   p Hi #{name},
+   p We're happy to have you on this mission. Here are some more information:
+
+   != markdown(content)
+
+   p For more, have a look at your dashboard:
+   a(href=host + link)= host + link
