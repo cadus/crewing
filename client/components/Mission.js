@@ -122,8 +122,8 @@ export default React.createClass({
       const area = mission.area ? mission.area.name : '';
       const position = this.state.position;
       const right = { float: 'right' };
-      const myStatus = mission.crew.find(a => a.volunteer.id === this.context.volunteer.id).status;
-      const buttonClass = status => status === myStatus ? 'default-primary' : 'default';
+      const myAssignment = mission.crew.find(a => a.volunteer.id === (this.context.volunteer ? this.context.volunteer.id : null)) || {};
+      const buttonClass = status => status === myAssignment.status ? 'default-primary' : 'default';
 
       let headOfMission = this.context.volunteers && this.context.volunteers[this.props.mission.headOfMission] || {};
       headOfMission = headOfMission.name ? `${headOfMission.name.first} ${headOfMission.name.last}` : '';
