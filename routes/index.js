@@ -13,7 +13,7 @@ const Volunteer = keystone.list('Volunteer');
 const commonPackages = ['react', 'react-dom', 'elemental', 'whatwg-fetch'];
 
 // Setup Route Bindings
-exports = module.exports = (app) => {
+module.exports = (app) => {
    app.enable('trust proxy');
    app.use(cookieParser());
 
@@ -22,21 +22,21 @@ exports = module.exports = (app) => {
    app.get('/volunteer', (req, res) => res.render('react', { page: 'volunteer' }));
    app.get('/availabilities', (req, res) => res.render('react', { page: 'availabilities' }));
 
-   app.get('/volunteer/:token', api.volunteers.setToken);
+   app.get('/volunteer/:token',                                               api.volunteers.setToken);
 
-   app.get('/api/missions', keystone.middleware.api, isAdmin, api.missions.all);
-   app.post('/api/missions', keystone.middleware.api, isAdmin, api.missions.create);
-   app.get('/api/missions/:id', keystone.middleware.api, isAdmin, api.missions.one);
-   app.put('/api/missions/:id', keystone.middleware.api, isAdmin, api.missions.update);
+   app.get('/api/missions',               keystone.middleware.api, isAdmin,   api.missions.all);
+   app.post('/api/missions',              keystone.middleware.api, isAdmin,   api.missions.create);
+   app.get('/api/missions/:id',           keystone.middleware.api, isAdmin,   api.missions.one);
+   app.put('/api/missions/:id',           keystone.middleware.api, isAdmin,   api.missions.update);
 
-   app.get('/api/volunteers', keystone.middleware.api, isAdmin, api.volunteers.all);
-   app.get('/api/volunteer', keystone.middleware.api, hasToken, api.volunteers.one);
-   app.put('/api/volunteer', keystone.middleware.api, hasToken, api.volunteers.update);
-   app.post('/api/volunteer', keystone.middleware.api, api.volunteers.create);
-   app.post('/api/volunteer/token', keystone.middleware.api, api.volunteers.changeToken);
-   app.put('/api/volunteer/missions/:id', keystone.middleware.api, hasToken, api.volunteers.changeMissionStatus);
+   app.get('/api/volunteers',             keystone.middleware.api, isAdmin,   api.volunteers.all);
+   app.get('/api/volunteer',              keystone.middleware.api, hasToken,  api.volunteers.one);
+   app.put('/api/volunteer',              keystone.middleware.api, hasToken,  api.volunteers.update);
+   app.post('/api/volunteer',             keystone.middleware.api,            api.volunteers.create);
+   app.post('/api/volunteer/token',       keystone.middleware.api,            api.volunteers.changeToken);
+   app.put('/api/volunteer/missions/:id', keystone.middleware.api, hasToken,  api.volunteers.changeMissionStatus);
 
-   app.post('/api/email', keystone.middleware.api, isAdmin, api.email.send);
+   app.post('/api/email',                 keystone.middleware.api, isAdmin,   api.email.send);
 
    // Uploaded images should not be publicly accessible
    app.use('/uploads', isAdminOrOwner, express.static('uploads', { redirect: false }));
