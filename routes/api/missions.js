@@ -26,7 +26,7 @@ exports.one = (req, res) => {
    Mission.model
       .findById(req.params.id, (err, mission) => {
          if (err) return res.apiError(err.detail.errmsg);
-         if (!mission) return res.apiError('not found');
+         if (!mission) return res.apiNotFound();
          res.apiResponse({ mission });
       });
 };
@@ -52,7 +52,7 @@ exports.update = (req, res) => {
    Mission.model
       .findById(req.params.id, (err, mission) => {
          if (err) return res.apiError(err.detail.errmsg);
-         if (!mission) return res.apiError('not found');
+         if (!mission) return res.apiNotFound();
 
          const data = {};
 

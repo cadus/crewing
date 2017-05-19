@@ -38,7 +38,7 @@ exports.one = (req, res) => {
       .findOne({ token: req.token })
       .exec((err, volunteer) => {
          if (err) return res.apiError(err.detail.errmsg);
-         if (!volunteer) return res.apiError('not found');
+         if (!volunteer) return res.apiNotFound();
 
          volunteer.verifyEmail();
 
@@ -104,7 +104,7 @@ exports.update = (req, res) => {
       .findOne({ token: req.token })
       .exec((err, volunteer) => {
          if (err) return res.apiError(err.detail.errmsg);
-         if (!volunteer) return res.apiError('not found');
+         if (!volunteer) return res.apiNotFound();
 
          volunteer.getUpdateHandler(req).process(req.body, (err2) => {
             if (err2) return res.apiError(err2.detail.errmsg);
@@ -121,7 +121,7 @@ exports.changeToken = (req, res) => {
       .findOne({ email: req.body.email })
       .exec((err, volunteer) => {
          if (err) return res.apiError(err.detail.errmsg);
-         if (!volunteer) return res.apiError('not found');
+         if (!volunteer) return res.apiNotFound();
 
          volunteer.token = getToken();
          volunteer.save((err2) => {
@@ -150,7 +150,7 @@ exports.changeMissionStatus = (req, res) => {
    const allowedStatus = ['pending', 'yes', 'no'];
 
    if (!allowedStatus.includes(newStatus)) {
-      return res.apiError('not allowed');
+      return res.apiNotAllowed();
    }
 
    Mission.model
@@ -158,7 +158,7 @@ exports.changeMissionStatus = (req, res) => {
       .populate('crew.volunteer', 'token name email')
       .exec((err, mission) => {
          if (err) return res.apiError(err.detail.errmsg);
-         if (!mission) return res.apiError('not found');
+         if (!mission) return res.apiNotFound();
 
          const match = mission.crew.find(a => a.volunteer.token === token);
 
@@ -187,7 +187,7 @@ exports.changeMissionStatus = (req, res) => {
                else res.apiResponse({ success: true });
             });
          }
-         else res.apiError('not found');
+         else res.apiNotFound();
       });
 };
 
@@ -199,7 +199,7 @@ exports.remove = (req, res) => {
       .findOne({ token: req.token })
       .exec((err, volunteer) => {
          if (err) return res.apiError(err.detail.errmsg);
-         if (!volunteer) return res.apiError('not found');
+         if (!volunteer) return res.apiNotFound();
 
          volunteer.remove((err2) => {
             if (err2) return res.apiError(err2.detail.errmsg);

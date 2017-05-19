@@ -15,7 +15,7 @@ exports.log = (req, res, next) => {
       .findById(missionID)
       .exec((err, mission) => {
          if (err) return res.apiError(err.detail.errmsg);
-         if (!mission) return res.apiError('not found');
+         if (!mission) return res.apiNotFound();
 
          mission.log.push({ subject, content });
          mission.save((err2) => {

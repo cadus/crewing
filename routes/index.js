@@ -69,14 +69,14 @@ function hasToken(req, res, next) {
 }
 
 function isAdmin(req, res, next) {
-   if (!req.user) return res.apiError('insufficient rights');
+   if (!req.user) return res.apiNotAllowed('insufficient rights');
    next();
 }
 
 function isAdminOrOwner(req, res, next) {
    const token = req.signedCookies.volunteer;
    const filename = path.basename(req.url);
-   const nope = () => res.sendStatus(403); // forbidden
+   const nope = () => res.apiNotAllowed();
 
    if (req.user) return next();
    if (!token) return nope();
