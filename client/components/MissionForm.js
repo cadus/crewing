@@ -70,6 +70,10 @@ export default React.createClass({
          .catch(({ error }) => this.setMessage(error, 'danger'));
    },
 
+   onCancel() {
+      this.props.onChange(this.props.mission);
+   },
+
    setMessage(text, type) {
       this.setState({ message: { text, type } });
       _.delay(() => this.setState({ message: null }), 3000);
@@ -195,7 +199,8 @@ export default React.createClass({
                </FormRow>
 
                <div style={{ textAlign: 'center', marginTop: '1rem' }}>
-                  <Button type="primary" submit style={{ padding: '0 2rem' }}>
+                  <Button type="link" onClick={this.onCancel}>Cancel</Button>
+                  <Button type="primary" submit>
                      Save Data and Notify Crew {this.state.isSubmitting && <Spinner type="inverted" />}
                   </Button>
                </div>
