@@ -20,6 +20,11 @@ Mission.add({
    headOfMission: { type: Types.Relationship, ref: 'Volunteer' },
    project: { type: Types.Relationship, ref: 'Project' },
    area: { type: Types.Relationship, ref: 'Area' },
+   log: { type: Types.List, fields: {
+      createdAt: { type: Types.Datetime, default: Date.now },
+      subject: { type: String },
+      content: { type: Types.Markdown },
+   }},
    createdAt: { type: Types.Datetime, default: Date.now },
    updatedAt: { type: Types.Datetime, default: Date.now },
 });

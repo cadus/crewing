@@ -13,6 +13,7 @@ export default React.createClass({
       subject: React.PropTypes.string,
       content: React.PropTypes.string,
       contacts: React.PropTypes.array,
+      mission: React.PropTypes.object,
    },
 
    getDefaultProps() {
@@ -23,6 +24,7 @@ export default React.createClass({
          subject: '',
          content: '',
          contacts: [],
+         mission: null,
       };
    },
 
@@ -49,13 +51,14 @@ export default React.createClass({
       event.preventDefault();
       this.setState({ isSubmitting: true });
 
+      const path = this.props.mission ? `/api/message/${this.props.mission.id}` : '/api/message';
       const body = new window.FormData();
       body.append('subject', this.state.subject);
       body.append('content', this.state.content);
       body.append('recipients', _.map(this.state.recipients, 'value'));
 
-      http.post('/api/email', { body })
-         .then(({ volunteer }) => this.setState({ isSubmitted: true }))
+      http.post(path, { body })
+         .then(() => this.setState({ isSubmitted: true }))
          .catch(({ error }) => this.setState({ error }));
    },
 

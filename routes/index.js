@@ -36,7 +36,8 @@ module.exports = (app) => {
    app.post('/api/volunteer/token',       keystone.middleware.api,            api.volunteers.changeToken);
    app.put('/api/volunteer/missions/:id', keystone.middleware.api, hasToken,  api.volunteers.changeMissionStatus);
 
-   app.post('/api/email',                 keystone.middleware.api, isAdmin,   api.email.send);
+   app.post('/api/message',               keystone.middleware.api, isAdmin,   api.messages.send);
+   app.post('/api/message/:mission',      keystone.middleware.api, isAdmin,   api.messages.log, api.messages.send);
 
    // Uploaded images should not be publicly accessible
    app.use('/uploads', isAdminOrOwner, express.static('uploads', { redirect: false }));

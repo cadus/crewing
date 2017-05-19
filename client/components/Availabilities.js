@@ -157,7 +157,7 @@ export default React.createClass({
          <div>
             {this.renderNav()}
             {this.state.isDrafting &&
-               <EmailEditor onClose={this.toggleEmailDrafting} contacts={contacts} />
+               <EmailEditor contacts={contacts} onClose={this.toggleEmailDrafting} />
             }
             <Timeline
                groups={groups}

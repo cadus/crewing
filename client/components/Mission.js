@@ -5,6 +5,7 @@ import { Alert, Card, Table, ButtonGroup, Button, Pill } from 'elemental';
 import { Map, TileLayer } from 'react-leaflet';
 import MissionForm from './MissionForm';
 import CommentForm from './CommentForm';
+import EmailEditor from './EmailEditor';
 import * as http from '../lib/http';
 import formData from '../lib/formData';
 
@@ -47,6 +48,7 @@ export default React.createClass({
          position,
          zoom: 10,
          isEditing: false,
+         isDrafting: false,
       };
    },
 
@@ -79,8 +81,9 @@ export default React.createClass({
    setMissionState(status) {
       const mission = this.props.mission;
       http.put(`/api/volunteer/missions/${mission.id}?status=${status}`)
-         .then((result) => {
-            mission.commitmentMessage = result.commitmentMessage;
+         .then(({ commitmentMessage, log }) => {
+            mission.commitmentMessage = commitmentMessage;
+            mission.log = log;
             mission.crew.find(a => a.volunteer.id === this.context.volunteer.id).status = status;
             this.props.onChange(mission);
          })
@@ -90,6 +93,76 @@ export default React.createClass({
    toggleEdit() {
       const isEditing = !this.state.isEditing;
       this.setState({ isEditing });
+   },
+
+   toggleMessage() {
+      const isDrafting = !this.state.isDrafting;
+      this.setState({ isDrafting });
+   },
+
+   renderEmailEditor() {
+      const mission = this.props.mission;
+      const contacts = mission.crew.map((assignment) => {
+         const volunteer = this.context.volunteers ? this.context.volunteers[assignment.volunteer] : assignment.volunteer;
+         return {
+            value: volunteer.id,
+            label: [volunteer.name.first, volunteer.name.last].join(' ').trim(),
+            isRecipient: assignment.status === 'yes',
+         };
+      });
+
+      return <EmailEditor mission={mission} contacts={contacts} onClose={this.toggleMessage} />;
+   },
+
+   renderHeadOfMission() {
+      let headOfMission = this.context.volunteers && this.context.volunteers[this.props.mission.headOfMission] || {};
+      headOfMission = headOfMission.name ? `${headOfMission.name.first} ${headOfMission.name.last}` : '';
+
+      return headOfMission ? <h4>Head of Mission: {headOfMission}</h4> : null;
+   },
+
+   renderStatusButtons() {
+      const myAssignment = this.props.mission.crew.find(a => a.volunteer.id === (this.context.volunteer ? this.context.volunteer.id : null));
+      const buttonClass = status => status === myAssignment.status ? 'default-primary' : 'default';
+
+      if (!myAssignment) return null;
+
+      return (
+         <div style={{ textAlign: 'right', marginBottom: '1em' }}>
+            <ButtonGroup style={{ marginLeft: '1em' }}>
+               <Button type="default" disabled>Change your participation state:</Button>
+               <Button type={buttonClass('yes')} onClick={() => this.setMissionState('yes')}>Yes</Button>
+               <Button type={buttonClass('pending')} onClick={() => this.setMissionState('pending')}>Undecided</Button>
+               <Button type={buttonClass('no')} onClick={() => this.setMissionState('no')}>No</Button>
+            </ButtonGroup>
+         </div>
+      );
+   },
+
+   renderLogs() {
+      const mission = this.props.mission;
+      const hasCommitmentMessage = mission.commitmentMessage && mission.commitmentMessage.html;
+      const hasLog = mission.log && mission.log.length;
+
+      if (!hasCommitmentMessage && !hasLog) return null;
+
+      return (
+         <div>
+            {hasCommitmentMessage &&
+               <div>
+                  <hr />
+                  <div dangerouslySetInnerHTML={{ __html: mission.commitmentMessage.html }} />
+               </div>
+            }
+            {_.map(mission.log, ({ createdAt, subject, content }) =>
+               <div key={createdAt}>
+                  <hr />
+                  <p><strong>{subject}</strong> from {formatDate(createdAt)}</p>
+                  <p dangerouslySetInnerHTML={{ __html: content ? content.html : '<i>Error</i>' }} />
+               </div>
+            )}
+         </div>
+      );
    },
 
    renderCrew(crew) {
@@ -141,13 +214,6 @@ export default React.createClass({
       const area = mission.area ? mission.area.name : '';
       const position = this.state.position;
       const right = { float: 'right' };
-      const myAssignment = mission.crew.find(a => a.volunteer.id === (this.context.volunteer ? this.context.volunteer.id : null)) || {};
-      const buttonClass = status => status === myAssignment.status ? 'default-primary' : 'default';
-
-      let headOfMission = this.context.volunteers && this.context.volunteers[this.props.mission.headOfMission] || {};
-      headOfMission = headOfMission.name ? `${headOfMission.name.first} ${headOfMission.name.last}` : '';
-
-      const isMyMission = this.context.volunteer && !!mission.crew.find(a => a.volunteer.id === this.context.volunteer.id);
 
       return (
          <Card>
@@ -156,30 +222,24 @@ export default React.createClass({
             }
 
             {this.props.isEditable
-               ? <Button onClick={this.toggleEdit} style={right}>Edit</Button>
+               ? <ButtonGroup style={right}>
+                     <Button onClick={this.toggleMessage}>Send Message</Button>
+                     <Button onClick={this.toggleEdit}>Edit Mission</Button>
+                  </ButtonGroup>
                : <Pill label={mission.status} type="info" style={right} />
             }
 
+            {this.state.isDrafting && this.renderEmailEditor()}
+
             <h2>{mission.name} {area && `in ${area}`} from {formatDate(mission.start)} till {formatDate(mission.end)}</h2>
 
-            {headOfMission &&
-               <h4>Head of Mission: {headOfMission}</h4>
-            }
+            {this.renderHeadOfMission()}
 
             {mission.description && mission.description.html &&
                <p dangerouslySetInnerHTML={{ __html: mission.description.html }} />
             }
 
-            {isMyMission &&
-               <div style={{ textAlign: 'right', marginBottom: '1em' }}>
-                  <ButtonGroup style={{ marginLeft: '1em' }}>
-                     <Button type="default" disabled>Change your participation state:</Button>
-                     <Button type={buttonClass('yes')} onClick={() => this.setMissionState('yes')}>Yes</Button>
-                     <Button type={buttonClass('pending')} onClick={() => this.setMissionState('pending')}>Undecided</Button>
-                     <Button type={buttonClass('no')} onClick={() => this.setMissionState('no')}>No</Button>
-                  </ButtonGroup>
-               </div>
-            }
+            {this.renderStatusButtons()}
 
             {this.renderCrew(mission.crew)}
 
@@ -189,12 +249,7 @@ export default React.createClass({
                </Map>
             }
 
-            {mission.commitmentMessage && mission.commitmentMessage.html &&
-               <div>
-                  <hr />
-                  <div dangerouslySetInnerHTML={{ __html: mission.commitmentMessage.html }} />
-               </div>
-            }
+            {this.renderLogs()}
          </Card>
       );
    },

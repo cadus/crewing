@@ -44,7 +44,7 @@ exports.one = (req, res) => {
 
          Mission.model
             .find({ 'crew.volunteer': volunteer })
-            .select('name description status start end crew area commitmentMessage')
+            .select('name description status start end crew area commitmentMessage log')
             .sort('-start')
             .populate('crew.volunteer', 'name group')
             .populate('area')
@@ -62,7 +62,10 @@ function filterCommitmentMessage(mongoMissions, volunteer) {
    const me = assignment => assignment.volunteer.id.toJSON() === volunteer.id;
    missions
       .filter(mission => mission.crew.find(me).status !== 'yes')
-      .forEach(mission => delete mission.commitmentMessage);
+      .forEach((mission) => {
+         delete mission.commitmentMessage;
+         delete mission.log;
+      });
    return missions;
 }
 
@@ -178,6 +181,7 @@ exports.changeMissionStatus = (req, res) => {
                      .then(() => res.apiResponse({
                         success: true,
                         commitmentMessage: mission.commitmentMessage,
+                        log: mission.log,
                      }));
                }
                else res.apiResponse({ success: true });
