@@ -15,6 +15,7 @@ Mission.add({
    crew: { type: Types.List, fields: {
       volunteer: { type: Types.Relationship, ref: 'Volunteer' },
       status: { type: Types.Select, options: 'none, pending, yes, no', default: 'none' },
+      comment: { type: String },
    }},
    headOfMission: { type: Types.Relationship, ref: 'Volunteer' },
    project: { type: Types.Relationship, ref: 'Project' },

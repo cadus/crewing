@@ -4,7 +4,9 @@ import _ from 'lodash';
 import { Alert, Card, Table, ButtonGroup, Button, Pill } from 'elemental';
 import { Map, TileLayer } from 'react-leaflet';
 import MissionForm from './MissionForm';
+import CommentForm from './CommentForm';
 import * as http from '../lib/http';
+import formData from '../lib/formData';
 
 const formatDate = date => moment(date).format(moment.localeData().longDateFormat('L'));
 
@@ -93,18 +95,35 @@ export default React.createClass({
    renderCrew(crew) {
       if (_.isEmpty(crew)) return null;
 
-      const rows = _.map(crew, (assignment) => {
+      const saveComment = assignment => (comment) => {
+         assignment.comment = comment;
+         const body = formData({ crew: this.props.mission.crew });
+         return http.put(`/api/missions/${this.props.mission.id}`, { body }).catch(_.noop); // meh
+      };
+      const rows = [];
+
+      _.each(crew, (assignment) => {
          const volunteer = this.context.volunteers
             ? this.context.volunteers[assignment.volunteer]
             : assignment.volunteer;
 
-         return (
+         rows.push(
             <tr key={volunteer.id}>
                <td><Pill label={assignment.status} type={statusMap[assignment.status]} /></td>
                <td>{_.startCase(volunteer.group)}</td>
                <td>{volunteer.name.first} {volunteer.name.last}</td>
             </tr>
          );
+
+         if (this.props.isEditable) {
+            rows.push(
+               <tr key={`${volunteer.id}-comment`}>
+                  <td colSpan="3">
+                     <CommentForm comment={assignment.comment} onChange={saveComment(assignment)} />
+                  </td>
+               </tr>
+            );
+         }
       });
 
       return (
