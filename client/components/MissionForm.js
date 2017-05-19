@@ -64,9 +64,7 @@ export default React.createClass({
       const body = formData(values);
 
       http.put(`/api/missions/${oldMission.id}`, { body })
-         .then(({ mission }) => {
-            this.props.onChange(mission);
-         })
+         .then(({ mission }) => this.props.onChange(mission))
          .catch(({ error }) => this.setMessage(error, 'danger'));
    },
 
