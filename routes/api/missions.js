@@ -110,9 +110,7 @@ exports.update = (req, res) => {
                         .catch(() => res.apiError('saved data but couldn\'t send all emails'));
                   });
             }
-            else {
-               res.apiResponse({ mission });
-            }
+            else res.apiResponse({ mission });
          });
       });
 };

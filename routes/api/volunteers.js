@@ -156,16 +156,16 @@ exports.changeMissionStatus = (req, res) => {
    Mission.model
       .findById(missionID)
       .populate('crew.volunteer', 'token name email')
-      .exec((err2, mission) => {
-         if (err2) return res.apiError(err2.detail.errmsg);
+      .exec((err, mission) => {
+         if (err) return res.apiError(err.detail.errmsg);
          if (!mission) return res.apiError('not found');
 
          const match = mission.crew.find(a => a.volunteer.token === token);
 
          if (match) {
             match.status = newStatus;
-            mission.save((err3) => {
-               if (err3) return res.apiError(err3.detail.errmsg);
+            mission.save((err2) => {
+               if (err2) return res.apiError(err2.detail.errmsg);
 
                if (newStatus === 'yes') {
 
