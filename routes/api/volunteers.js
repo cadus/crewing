@@ -44,7 +44,7 @@ exports.one = (req, res) => {
 
          Mission.model
             .find({ 'crew.volunteer': volunteer })
-            .select('name status start end crew area commitmentMessage')
+            .select('name description status start end crew area commitmentMessage')
             .sort('-start')
             .populate('crew.volunteer', 'name group')
             .populate('area')

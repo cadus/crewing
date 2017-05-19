@@ -166,10 +166,14 @@ export default React.createClass({
                <h4>Head of Mission: {headOfMission}</h4>
             }
 
+            {mission.description && mission.description.html &&
+               <p dangerouslySetInnerHTML={{ __html: mission.description.html }} />
+            }
+
             {isMyMission &&
                <div style={{ textAlign: 'right', marginBottom: '1em' }}>
-                  Change your participation state:
                   <ButtonGroup style={{ marginLeft: '1em' }}>
+                     <Button type="default" disabled>Change your participation state:</Button>
                      <Button type={buttonClass('yes')} onClick={() => this.setMissionState('yes')}>Yes</Button>
                      <Button type={buttonClass('pending')} onClick={() => this.setMissionState('pending')}>Undecided</Button>
                      <Button type={buttonClass('no')} onClick={() => this.setMissionState('no')}>No</Button>
@@ -185,10 +189,9 @@ export default React.createClass({
                </Map>
             }
 
-            {mission.commitmentMessage &&
+            {mission.commitmentMessage && mission.commitmentMessage.html &&
                <div>
                   <hr />
-                  <h2>Mission Information</h2>
                   <div dangerouslySetInnerHTML={{ __html: mission.commitmentMessage.html }} />
                </div>
             }
