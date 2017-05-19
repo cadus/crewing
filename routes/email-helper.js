@@ -7,7 +7,7 @@ const defaultTemplate = 'blank.jade';
 
 module.exports = (template = defaultTemplate) => (recipient, subject, data) => {
    if (isDevelopment) {
-      console.log('SEND MAIL "', subject, '"\nTO', recipient, '\n\n', markdown(data.content));
+      console.log('SEND MAIL "', subject, '"\nTO', recipient, '\n\n', data);
       return Promise.resolve();
    }
 
