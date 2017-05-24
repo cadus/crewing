@@ -48,7 +48,7 @@ export default React.createClass({
 
    render() {
       return (
-         <div>
+         <div style={{ position: 'relative' }}>
             <FormInput
                name="comment"
                type="text"
