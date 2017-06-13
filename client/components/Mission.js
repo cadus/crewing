@@ -122,7 +122,7 @@ export default React.createClass({
    },
 
    renderStatusButtons() {
-      const myAssignment = this.props.mission.crew.find(a => a.volunteer.id === (this.context.volunteer ? this.context.volunteer.id : null));
+      const myAssignment = this.props.mission.crew.find(a => _.get(a, 'volunteer.id') === (this.context.volunteer ? this.context.volunteer.id : null));
       const buttonClass = status => status === myAssignment.status ? 'default-primary' : 'default';
 
       if (!myAssignment) return null;
@@ -176,21 +176,21 @@ export default React.createClass({
       const rows = [];
 
       _.each(crew, (assignment) => {
-         const volunteer = this.context.volunteers
+         const volunteer = (this.context.volunteers
             ? this.context.volunteers[assignment.volunteer]
-            : assignment.volunteer;
+            : assignment.volunteer) || {};
 
          rows.push(
-            <tr key={volunteer.id}>
+            <tr key={assignment._id}>
                <td><Pill label={assignment.status} type={statusMap[assignment.status]} /></td>
                <td>{_.startCase(volunteer.group)}</td>
-               <td>{volunteer.name.first} {volunteer.name.last}</td>
+               <td>{_.get(volunteer, 'name.first')} {_.get(volunteer, 'name.last')}</td>
             </tr>
          );
 
          if (this.props.isEditable) {
             rows.push(
-               <tr key={`${volunteer.id}-comment`}>
+               <tr key={`${assignment._id}-comment`}>
                   <td colSpan="3">
                      <CommentForm comment={assignment.comment} onChange={saveComment(assignment)} />
                   </td>

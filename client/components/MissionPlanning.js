@@ -33,11 +33,11 @@ export default React.createClass({
          http.get('/api/missions'),
          http.get('/api/volunteers'),
       ])
+         .catch(({ error }) => this.setState({ error }))
          .then(([{ missions }, { volunteers }]) => {
             const mappedVolunteers = _.keyBy(volunteers, 'id');
             this.setState({ missions, volunteers: mappedVolunteers }, this.setAssignments);
-         })
-         .catch(({ error }) => this.setState({ error }));
+         });
    },
 
    setAssignments() {
