@@ -212,7 +212,7 @@ exports.remove = (req, res) => {
  * List all Volunteers
  */
 exports.resendToken = (req, res) => {
-   Volunteer.model.find({ isVerified: false }, async (err, volunteers) => {
+   Volunteer.model.find({ isVerified: false }, (err, volunteers) => {
       if (err) return res.apiError(err.detail.errmsg);
 
       res.write('<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"></head><body><h1>Sent to</h1><ul>');
@@ -221,24 +221,23 @@ exports.resendToken = (req, res) => {
       const sendEmail = email('volunteer-created.jade');
       const subject = 'crewing account created';
 
-      for (const volunteer of volunteers) {
+      const sendToVolunteer = (volunteer) => {
          const values = {
             name: volunteer.name.first,
             path: `/volunteer/${volunteer.token}`,
          };
-         try {
-            await sendEmail(volunteer.email, subject, values);
-            res.write(`<li>${volunteer.email}</li>`);
-         }
-         catch (err2) {
-            res.write(`<li>Error for ${volunteer.email}: ${err2.toString()}</li>`);
-         }
-         finally {
-            res.flush();
-            await sleep(5);
-         }
-      }
+         return sendEmail(volunteer.email, subject, values)
+            .then(() => res.write(`<li>${volunteer.email}</li>`))
+            .catch(err2 => res.write(`<li>Error for ${volunteer.email}: ${err2.toString()}</li>`));
+      };
 
-      res.end('<h1>Done</h1>');
+      let chain = Promise.resolve();
+      volunteers.forEach((volunteer) => {
+         chain = chain
+            .then(() => sendToVolunteer(volunteer))
+            .then(() => sleep(5));
+      });
+
+      chain.then(() => res.end('<h1>Done</h1>'));
    });
 };
