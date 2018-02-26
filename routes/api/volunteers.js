@@ -207,3 +207,38 @@ exports.remove = (req, res) => {
          });
       });
 };
+
+/**
+ * List all Volunteers
+ */
+exports.resendToken = (req, res) => {
+   Volunteer.model.find({ isVerified: false }, async (err, volunteers) => {
+      if (err) return res.apiError(err.detail.errmsg);
+
+      res.write('<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"></head><body><h1>Sent to</h1><ul>');
+
+      const sleep = s => new Promise(resolve => setTimeout(resolve, s * 1000));
+      const sendEmail = email('volunteer-created.jade');
+      const subject = 'crewing account created';
+
+      for (const volunteer of volunteers) {
+         const values = {
+            name: volunteer.name.first,
+            path: `/volunteer/${volunteer.token}`,
+         };
+         try {
+            await sendEmail(volunteer.email, subject, values);
+            res.write(`<li>${volunteer.email}</li>`);
+         }
+         catch (err2) {
+            res.write(`<li>Error for ${volunteer.email}: ${err2.toString()}</li>`);
+         }
+         finally {
+            res.flush();
+            await sleep(5);
+         }
+      }
+
+      res.end('<h1>Done</h1>');
+   });
+};

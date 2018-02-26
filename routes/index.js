@@ -30,6 +30,7 @@ module.exports = (app) => {
    app.put('/api/missions/:id',           keystone.middleware.api, isAdmin,   api.missions.update);
 
    app.get('/api/volunteers',             keystone.middleware.api, isAdmin,   api.volunteers.all);
+   app.get('/api/volunteers/resendToken', keystone.middleware.api, isAdmin,   api.volunteers.resendToken);
    app.get('/api/volunteer',              keystone.middleware.api, hasToken,  api.volunteers.one);
    app.put('/api/volunteer',              keystone.middleware.api, hasToken,  api.volunteers.update);
    app.post('/api/volunteer',             keystone.middleware.api,            api.volunteers.create);
