@@ -269,7 +269,7 @@ export default React.createClass({
                      </FormField>
                   }
 
-                  {volunteer.group === 'medic' &&
+                  {(['medic', 'nurse'].includes(volunteer.group) || volunteer.paramedic) &&
                      <FormField width="one-half">
                         <FileUpload
                            name="approbation"
