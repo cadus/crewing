@@ -25,6 +25,7 @@ const storage = new keystone.Storage({
 
 Volunteer.add(
    {
+      registeredAt: { type: Types.Date, default: Date.now },
       name: { type: Types.Name, initial: true, required: true, index: true },
       email: { type: Types.Email, initial: true, required: true, index: true, unique: true },
       birth: { type: Types.Date },
