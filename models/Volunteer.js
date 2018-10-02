@@ -66,6 +66,8 @@ Volunteer.add(
    },
    'Scans',
    {
+      cv: { type: Types.File, storage },
+      cv_text: { type: Types.Textarea },
       passport: { type: Types.File, storage },
       presscard: { type: Types.File, storage, dependsOn: { group: 'journalist' } },
       approbation: { type: Types.File, storage, dependsOn: { group: 'medic' } },

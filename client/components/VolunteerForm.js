@@ -257,45 +257,30 @@ export default React.createClass({
                   <Checkbox name="experienceOnSea" label="Experience on Sea" defaultChecked={volunteer.experienceOnSea} />
                </FormField>
 
+               <hr />
+
+               <h3>Curriculum Vitae</h3>
+
+               <p>In your CV you do not have to tell us your complete history with school education etc., but we need to know your employment and volunteering history. </p>
+
                <FormRow>
-                  <FormField width="one-half">
+                  <FormField width="one-third">
                      <FileUpload
-                        name="passport"
-                        buttonLabelInitial="Upload a scan of your passport"
-                        buttonLabelChange="Change the scan of your passport"
-                        file={volunteer.passport}
-                        onChange={this.setPart('passport')}
+                        name="cv"
+                        buttonLabelInitial="Upload your CV"
+                        buttonLabelChange="Change your CV"
+                        file={volunteer.cv}
+                        onChange={this.setPart('cv')}
                      />
                   </FormField>
-
-                  {volunteer.group === 'journalist' &&
-                     <FormField width="one-half">
-                        <FileUpload
-                           name="presscard"
-                           buttonLabelInitial="Upload a scan of your presscard"
-                           buttonLabelChange="Change the scan of your presscard"
-                           file={volunteer.presscard}
-                           onChange={this.setPart('presscard')}
-                        />
-                     </FormField>
-                  }
-
-                  {(['medic', 'nurse'].includes(volunteer.group) || volunteer.paramedic) &&
-                     <FormField width="one-half">
-                        <FileUpload
-                           name="approbation"
-                           buttonLabelInitial="Upload a scan of your approbation"
-                           buttonLabelChange="Change the scan of your approbation"
-                           file={volunteer.approbation}
-                           onChange={this.setPart('approbation')}
-                        />
-                     </FormField>
-                  }
+                  <FormField label="Or CV as Text" width="two-thirds">
+                     <FormInput name="cv_text" type="text" multiline defaultValue={volunteer.cv_text} required />
+                  </FormField>
                </FormRow>
 
                <hr />
 
-               <h3>Work Experience</h3>
+               {/*<h3>Work Experience</h3>
 
                <ListEditor
                   headings={['Name of employer', 'Title / role', 'Dates worked', 'Location']}
@@ -304,7 +289,7 @@ export default React.createClass({
                   onChange={this.setPart('workExperience')}
                />
 
-               <hr />
+               <hr />*/}
 
                <h3>Questions</h3>
 
