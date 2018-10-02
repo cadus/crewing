@@ -16,7 +16,7 @@ export default React.createClass({
       return {
          volunteer: null,
          missions: null,
-         isEditing: false,
+         isEditing: true,
          error: null,
          message: null,
          hasVisitedBefore: !!window.localStorage.getItem('hasVisitedBefore'),
@@ -96,7 +96,7 @@ export default React.createClass({
                <Card style={{ overflow: 'hidden' }}>
                   <img src="/images/logo.svg" height="32" alt="cadus crewing" style={{ marginTop: -10 }} />
                   <ButtonGroup style={{ float: 'right' }}>
-                     <Button type="link" size="sm" onClick={this.toggleEditMode}>Change Data</Button>
+                     {/*<Button type="link" size="sm" onClick={this.toggleEditMode}>Change Data</Button>*/}
                      <small style={{ paddingLeft: 14 }}>{this.state.volunteer.name.first}</small>
                   </ButtonGroup>
                </Card>
