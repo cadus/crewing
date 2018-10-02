@@ -91,6 +91,17 @@ export default React.createClass({
          .catch(({ error }) => this.setMessage(error, 'danger'));
    },
 
+   deleteProfile() {
+      if (window.confirm('Are you sure? This cannot be undone.')) {
+         http.del('/api/volunteer')
+            .then((response) => {
+               window.alert('Your account has been deleted.');
+               window.location = '/';
+            })
+            .catch(({ error }) => this.setMessage(error, 'danger'));
+      }
+   },
+
    getDiff(oldVolunteer, newVolunteer) {
       return _.transform(newVolunteer, (result, value, key) => {
          if (_.isEqual(oldVolunteer[key], value)) return;
@@ -323,6 +334,7 @@ export default React.createClass({
                   </Button>
                </div>
 
+               <Button type="danger" size="sm" onClick={this.deleteProfile}>Delete Profile</Button>
             </Form>
          </Card>
       );
