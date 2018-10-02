@@ -1,5 +1,5 @@
 import React from 'react';
-import { Button, Form, FormField, FormInput, Alert, Spinner } from 'elemental';
+import { Button, Form, FormField, FormInput, Alert, Spinner, Modal, ModalHeader, ModalBody, ModalFooter } from 'elemental';
 import LoginLinkForm from './LoginLinkForm';
 import * as http from '../lib/http';
 
@@ -10,6 +10,7 @@ export default React.createClass({
          isSubmitting: false,
          submitted: false,
          showResendForm: false,
+         showModal: false,
       };
    },
 
@@ -46,6 +47,7 @@ export default React.createClass({
 
    renderForm() {
       const toggleResend = () => this.setState({ showResendForm: true });
+      const showModal = () => this.setState({ showModal: true });
 
       return (
          <div>
@@ -60,7 +62,7 @@ export default React.createClass({
                </FormField>
                <label className="Checkbox">
                   <input type="checkbox" name="dataPrivacy" className="Checkbox__input" required />
-                  <span className="Checkbox__label">I'm accepting the <a href="/">Data Privacy Terms</a></span>
+                  <span className="Checkbox__label">I'm accepting the <a href="#" onClick={showModal}>Privacy Policy</a></span>
                </label>
                <hr />
                <Button type="primary" block submit>
@@ -79,6 +81,8 @@ export default React.createClass({
          return <LoginLinkForm />;
       }
 
+      const hideModal = () => this.setState({ showModal: false });
+
       return (
          <div className="box">
             <div className="inner">
@@ -86,6 +90,22 @@ export default React.createClass({
                <hr />
                {this.state.submitted ? this.renderResult() : this.renderForm()}
             </div>
+            {this.state.showModal &&
+               <Modal isOpen onCancel={hideModal} backdropClosesModal>
+                  <ModalHeader text="Privacy Policy" showCloseButton onClose={hideModal} />
+                  <ModalBody>
+                     <p>When contacting CADUS e.V. via the following contact form, the data that you provide will be stored by CADUS e.V. The requested details serve the application procedure and possible future collaboration with CADUS e.V. The communication of the details is expressly done voluntarily and with your consent, in line with Art. 6 (1a) GDPR.</p>
+                     <p>As far as the data given involves communication channels (e.g. e-mail-address, phone number), you consent that we contact you via these channels if appropriate. Of course, you can revoke this consent for the future at any time.</p>
+                     <p>Your personal data will exclusively be used for the purpose of the work of CADUS e.V. The data obtained will only be viewed by associates of CADUS e.V. and only used for the purpose of following the objectives of CADUS e.V. None of your data will be passed on to third parties.</p>
+                     <p>We will delete the data obtained after its storing is not necessary anymore, or if you wish that your data is deleted. In case statutory storage obligations persist, we will restrict the processing of your data.</p>
+                     <p>You can object to the storing of your data at any time by sending an e-mail to crewing/at/cadus.org.</p>
+                     <p>The data protection officer is Christoph Löffler. Contact: christoph/at/cadus.org</p>
+                  </ModalBody>
+                  <ModalFooter>
+                     <Button type="primary" onClick={hideModal}>Schließen</Button>
+                  </ModalFooter>
+               </Modal>
+            }
          </div>
       );
    },
