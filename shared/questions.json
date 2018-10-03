@@ -8,12 +8,12 @@
       "q_substances": "Is there any substance use for stabilisation in situations of crisis? If yes, which substances?"
    },
    "Personal environment": {
-      "q_crisis": "Is there currently a crisis in your life ( i.e. break-up with your partner, loss of job, loss of a beloved person, illness of a close person?)",
-      "q_support": "Do you have a support network – family, friends, a partner, who are there for you if you need them?",
-      "q_stress": "How do you react in stress situations?",
+      "q_crisis": "Is there currently a crisis in your life (e.g. break-up with your partner, loss of job, loss of a beloved person, illness of a close person)?",
+      "q_support": "Do you have a support network – family, friends, or a partner who are there for you if you need them?",
+      "q_stress": "How do you react in stressful situations?",
       "q_helpful": "Which aspects of your personality are helpful in these situations? Which are not so helpful?",
       "q_dislike": "Which personality aspects of others typically drive you nuts?",
-      "q_death": "What is your experience with death and suffering? Have you ever seen a dead body? How would you react if you could not help in an emergency situation?",
-      "q_concern": "What is your greatest concern about the mission?"
+      "q_death": "What is your experience with death and suffering? Have you ever seen a dead body? How would you react if you couldn’t help in an emergency situation?",
+      "q_concern": "What are your biggest worries about the mission?"
    }
 }
