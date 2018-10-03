@@ -276,7 +276,7 @@ export default React.createClass({
                      />
                   </FormField>
                   <FormField label="Or CV as Text" width="two-thirds">
-                     <FormInput name="cv_text" type="text" multiline defaultValue={volunteer.cv_text} required />
+                     <FormInput name="cv_text" type="text" multiline defaultValue={volunteer.cv_text} />
                   </FormField>
                </FormRow>
 
