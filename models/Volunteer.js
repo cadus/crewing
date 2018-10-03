@@ -55,6 +55,7 @@ Volunteer.add(
       lifeguard: { type: Boolean, indent: true },
       experienceOnSea: { type: Boolean, indent: true },
       boatDriverPermit: { type: Types.Select, options: 'Class 1, Class 2, Class 3' },
+      trainings: { type: String },
       workExperience: { type: Types.List, fields: {
          employer: { type: String, label: 'Name of employer' },
          role: { type: String, label: 'Title / role' },

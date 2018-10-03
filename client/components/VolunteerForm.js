@@ -234,6 +234,10 @@ export default React.createClass({
                   <FormField label="Boat Driver Permit" width="one-half">
                      <FormSelect name="boatDriverPermit" options={boatDriverPermits} defaultValue={volunteer.boatDriverPermit} onChange={_.noop} />
                   </FormField>
+                  <FormField label="Trainings" width="one-half">
+                     <p>Please state if you have completed any trainings that may be relevant for deployment, e.g. HEAT or PHTLS.</p>
+                     <FormInput name="trainings" type="text" defaultValue={volunteer.trainings} />
+                  </FormField>
                </FormRow>
 
                <hr />
