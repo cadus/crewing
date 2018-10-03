@@ -50,6 +50,7 @@ Volunteer.add(
       truckDriversLicence: { type: Boolean, indent: true, dependsOn: { driversLicence: true } },
       internationalDriversLicence: { type: Boolean, indent: true, dependsOn: { driversLicence: true } },
       internationalTruckDriversLicence: { type: Boolean, indent: true, dependsOn: { driversLicence: true } },
+      allowedVehicleWeight: { type: String, indent: true, dependsOn: { driversLicence: true } },
       emergencydoctor: { type: Boolean, indent: true },
       lifeguard: { type: Boolean, indent: true },
       experienceOnSea: { type: Boolean, indent: true },

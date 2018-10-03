@@ -225,6 +225,8 @@ export default React.createClass({
                            <Checkbox name="truckDriversLicence" label="Truck Driver's Licence" defaultChecked={volunteer.truckDriversLicence} />
                            <Checkbox name="internationalDriversLicence" label="International Driver's Licence" defaultChecked={volunteer.internationalDriversLicence} />
                            <Checkbox name="internationalTruckDriversLicence" label="International Truck Driver's Licence" defaultChecked={volunteer.internationalTruckDriversLicence} />
+                           <label className="FormLabel">How many tons are you allowed to drive?</label>
+                           <FormInput name="allowedVehicleWeight" type="text" defaultValue={volunteer.allowedVehicleWeight} />
                         </div>
                      }
                      <Checkbox name="experienceOnSea" label="Experience on Sea" defaultChecked={volunteer.experienceOnSea} />
