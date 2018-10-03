@@ -164,12 +164,9 @@ export default React.createClass({
                   <FormField label="Phone number" width="one-half">
                      <FormInput name="phone" type="text" defaultValue={volunteer.phone} required />
                   </FormField>
-                  <FormField label="Emergency Contacts" width="one-half">
+                  {/*<FormField label="Emergency Contacts" width="one-half">
                      <FormInput name="emergencyContacts" type="text" defaultValue={volunteer.emergencyContacts} />
-                  </FormField>
-               </FormRow>
-
-               <FormRow>
+                  </FormField>*/}
                   <FormField label="Languages" width="one-half">
                      <FormInput name="languages" type="text" defaultValue={volunteer.languages} required />
                   </FormField>
@@ -195,7 +192,7 @@ export default React.createClass({
                   </FormField>
                </FormRow>
 
-               <FormField>
+               {/*<FormField>
                   <FileUpload
                      name="photo"
                      buttonLabelInitial="Upload a photo of you"
@@ -203,7 +200,7 @@ export default React.createClass({
                      file={volunteer.photo}
                      onChange={this.setPart('photo')}
                   />
-               </FormField>
+               </FormField>*/}
 
                <hr />
 
@@ -293,19 +290,11 @@ export default React.createClass({
 
                <h3>Questions</h3>
 
-               <Alert type="info">
-                  The following information is confidential and will only be reviewed by the person responsible for crewing. We guarantee that your information will not be shared with third parties and is not accessable by other members / employees at Cadus.
-               </Alert>
-
                {_.map(questions['Questions'], (value, key) =>
                   <FormField label={value} key={key}>
                      <FormInput name={key} type="text" defaultValue={volunteer[key]} required />
                   </FormField>
                )}
-
-               <h3>Personal environment</h3>
-
-               <p>Your experiences during a mission can best be processed if you have a stable and supporting personal environment. If in your current life situation everything is upheaval, this might not be the right time for a mission.</p>
 
                {_.map(questions['Personal environment'], (value, key) =>
                   <FormField label={value} key={key}>
