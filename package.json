@@ -6,12 +6,12 @@
   "license": "MIT",
   "main": "index.js",
   "engines": {
-    "node": ">=6.0.0",
+    "node": ">=8.4.0",
     "npm": ">=3.0.0"
   },
   "scripts": {
     "start": "bash start.sh",
-    "restore-db": "mongo crewing --eval 'db.dropDatabase();'; ssh cadus mongodump --db crewing --archive --gzip | mongorestore --archive --gzip",
+    "update-local-db": "mongo crewing --eval 'db.dropDatabase();'; ssh cadus mongodump --db crewing --archive --gzip | mongorestore --archive --gzip",
     "update-server": "ssh cadus 'cd crewing && git pull && pm2 ls && pm2 reload crewing'",
     "lint": "eslint .",
     "lint:fix": "eslint . --fix"
