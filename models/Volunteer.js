@@ -45,7 +45,7 @@ Volunteer.add(
    },
    'Group & Qualification',
    {
-      group: { type: Types.Select, options: groups.join(), default: 'helper' },
+      group: { type: Types.Select, options: groups.join() },
       driversLicence: { type: Boolean, indent: true },
       truckDriversLicence: { type: Boolean, indent: true, dependsOn: { driversLicence: true } },
       internationalDriversLicence: { type: Boolean, indent: true, dependsOn: { driversLicence: true } },
@@ -104,8 +104,6 @@ Volunteer.add(
       cv: { type: Types.File, storage },
       cv_text: { type: Types.Textarea },
       passport: { type: Types.File, storage },
-      presscard: { type: Types.File, storage, dependsOn: { group: 'journalist' } },
-      approbation: { type: Types.File, storage, dependsOn: { group: 'medic' } },
    }
 );
 
@@ -169,6 +167,6 @@ Volunteer.schema.pre('save', function (next) {
 transform.toJSON(Volunteer);
 
 Volunteer.track = true;
-Volunteer.defaultColumns = 'name, email, group';
+Volunteer.defaultColumns = 'name, email';
 
 Volunteer.register();
