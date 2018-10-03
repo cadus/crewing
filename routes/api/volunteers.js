@@ -215,6 +215,7 @@ exports.resendToken = (req, res) => {
    Volunteer.model.find({ isVerified: false }, (err, volunteers) => {
       if (err) return res.apiError(err.detail.errmsg);
 
+      res.header('Content-Type', 'text/html; charset=utf-8');
       res.write('<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"></head><body><h1>Sent to</h1><ul>');
 
       const sleep = s => new Promise(resolve => setTimeout(resolve, s * 1000));
@@ -235,6 +236,7 @@ exports.resendToken = (req, res) => {
       volunteers.forEach((volunteer) => {
          chain = chain
             .then(() => sendToVolunteer(volunteer))
+            .then(() => res.flush())
             .then(() => sleep(5));
       });
 
