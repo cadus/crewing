@@ -1,16 +1,20 @@
 [
-   "captain",
+   "aviation",
    "craftsman",
+   "doctor",
    "engineer",
    "firefighter",
-   "helper",
-   "journalist",
+   "labTechnician",
    "logistician",
-   "medic",
-   "medical lab technician",
+   "mechanic",
+   "media",
+   "medical",
    "midwife",
    "nurse",
-   "photographer",
-   "rescue technician",
-   "technician"
+   "paramedic",
+   "physiotherapist",
+   "technician",
+   "seafaring",
+   "WASH Expert",
+   "other"
 ]

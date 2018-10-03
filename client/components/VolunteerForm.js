@@ -218,40 +218,39 @@ export default React.createClass({
                <h3>Qualification</h3>
 
                <FormRow>
-                  <FormField label="Group" width="one-half">
-                     <FormSelect name="group" options={groups} defaultValue={volunteer.group} onChange={_.noop} />
+                  <FormField label="Additions" width="one-half">
+                     <Checkbox name="driversLicence" label="Driver's Licence" defaultChecked={volunteer.driversLicence} />
+                     {volunteer.driversLicence &&
+                        <div style={indentStyle}>
+                           <Checkbox name="truckDriversLicence" label="Truck Driver's Licence" defaultChecked={volunteer.truckDriversLicence} />
+                           <Checkbox name="internationalDriversLicence" label="International Driver's Licence" defaultChecked={volunteer.internationalDriversLicence} />
+                           <Checkbox name="internationalTruckDriversLicence" label="International Truck Driver's Licence" defaultChecked={volunteer.internationalTruckDriversLicence} />
+                        </div>
+                     }
+                     <Checkbox name="experienceOnSea" label="Experience on Sea" defaultChecked={volunteer.experienceOnSea} />
                   </FormField>
                   <FormField label="Boat Driver Permit" width="one-half">
                      <FormSelect name="boatDriverPermit" options={boatDriverPermits} defaultValue={volunteer.boatDriverPermit} onChange={_.noop} />
                   </FormField>
                </FormRow>
 
+               <hr />
+
+               <h3>Profession</h3>
+
                <FormField>
-                  <Checkbox name="driversLicence" label="Driver's Licence" defaultChecked={volunteer.driversLicence} />
-                  {volunteer.driversLicence &&
-                     <div style={indentStyle}>
-                        <Checkbox name="truckDriversLicence" label="Truck Driver's Licence" defaultChecked={volunteer.truckDriversLicence} />
-                        <Checkbox name="internationalDriversLicence" label="International Driver's Licence" defaultChecked={volunteer.internationalDriversLicence} />
-                        <Checkbox name="internationalTruckDriversLicence" label="International Truck Driver's Licence" defaultChecked={volunteer.internationalTruckDriversLicence} />
-                     </div>
-                  }
-
-                  <Checkbox name="paramedic" label="Paramedic" defaultChecked={volunteer.paramedic} />
-
-                  <label className="Checkbox">
-                     <input type="checkbox" className="Checkbox__input" name="doctor" defaultChecked={volunteer.doctor} />
-                     <span className="Checkbox__label">Doctor</span>
-                     {volunteer.doctor &&
-                        <div style={indentStyle}>
-                           <label className="FormLabel">Specialization</label>
-                           <FormInput name="doctorSpecialization" type="text" defaultValue={volunteer.doctorSpecialization} />
-                        </div>
-                     }
-                  </label>
-
-                  <Checkbox name="emergencydoctor" label="Emergency Doctor" defaultChecked={volunteer.emergencydoctor} />
-                  <Checkbox name="lifeguard" label="Lifeguard" defaultChecked={volunteer.lifeguard} />
-                  <Checkbox name="experienceOnSea" label="Experience on Sea" defaultChecked={volunteer.experienceOnSea} />
+                  {groups.map(({ label, value }) => (
+                     <label key={value} className="Checkbox">
+                        <input type="checkbox" className="Checkbox__input" name={value} defaultChecked={volunteer[value]} />
+                        <span className="Checkbox__label">{label}</span>
+                        {volunteer[value] &&
+                           <div style={indentStyle}>
+                              <label className="FormLabel">Specialization</label>
+                              <FormInput name={`${value}Specialization`} type="text" defaultValue={volunteer[`${value}Specialization`]} />
+                           </div>
+                        }
+                     </label>
+                  ))}
                </FormField>
 
                <hr />
