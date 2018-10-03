@@ -307,6 +307,28 @@ export default React.createClass({
                   </FormField>
                )}
 
+               <hr />
+
+               <Alert type="info">
+                  <strong>Information</strong>
+                  <p>
+                     We may contact you via email to set up a meeting (in person or via Skype) for an interview. After the interview you may be invited to join us on a mission. Please be aware that in order to complete the application process and join a mission, you are then required to provide the following documents as digital copies:
+                     <ul>
+                        <li>Colour copy of your passport</li>
+                        <li>Passport-style picture</li>
+                        <li>Copy of your relevant degree or certificate</li>
+                        <li>For doctors: approbation, proof of specialisation, and license to practice (if available)</li>
+                        <li>For other medical personnel: exam and license to practice (if available)</li>
+                        <li>Reference contact of your current or most recent employer</li>
+                        <li>Copy of your vaccination record</li>
+                        <li>Certificate of medical clearance</li>
+                        <li>Child safety check / background check ("erweitertes Führungszeugnis")</li>
+                        <li>Certificates of trainings completed (as stated in the questionnaire) </li>
+                        <li>Emergency contact</li>
+                     </ul>
+                  </p>
+               </Alert>
+
                <div style={{ position: 'sticky', bottom: 0, padding: '1rem', backgroundColor: '#fff', textAlign: 'center' }}>
                   <Button type="primary" submit style={{ padding: '0 2rem' }}>
                      Save Data {this.state.isSubmitting && <Spinner type="inverted" />}
