@@ -92,6 +92,8 @@ Volunteer.add(
       physiotherapistSpecialization: { type: String, dependsOn: { physiotherapist: true } },
       technician: { type: Boolean, indent: true },
       technicianSpecialization: { type: String, dependsOn: { technician: true } },
+      translator: { type: Boolean, indent: true },
+      translatorSpecialization: { type: String, dependsOn: { translator: true } },
       seafaring: { type: Boolean, indent: true },
       seafaringSpecialization: { type: String, dependsOn: { seafaring: true } },
       WASHExpert: { type: Boolean, indent: true },
