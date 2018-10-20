@@ -68,6 +68,8 @@ Volunteer.add(
       craftsmanSpecialization: { type: String, dependsOn: { craftsman: true } },
       doctor: { type: Boolean, indent: true },
       doctorSpecialization: { type: String, dependsOn: { doctor: true } },
+      dentist: { type: Boolean, indent: true },
+      dentistSpecialization: { type: String, dependsOn: { dentist: true } },
       engineer: { type: Boolean, indent: true },
       engineerSpecialization: { type: String, dependsOn: { engineer: true } },
       firefighter: { type: Boolean, indent: true },
