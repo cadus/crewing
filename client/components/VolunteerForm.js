@@ -334,7 +334,7 @@ export default React.createClass({
                   </p>
                </Alert>
 
-               <div style={{ position: 'sticky', bottom: 0, padding: '1rem', backgroundColor: '#fff', textAlign: 'center' }}>
+               <div style={{ position: 'sticky', position: '-webkit-sticky', bottom: 0, padding: '1rem', backgroundColor: '#fff', textAlign: 'center' }}>
                   <Button type="primary" submit style={{ padding: '0 2rem' }}>
                      Save Data {this.state.isSubmitting && <Spinner type="inverted" />}
                   </Button>
