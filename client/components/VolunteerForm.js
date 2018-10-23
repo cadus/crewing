@@ -88,7 +88,11 @@ export default React.createClass({
             });
             this.setMessage('Changes were saved.', 'success');
          })
-         .catch(({ error }) => this.setMessage(error, 'danger'));
+         .catch(({ error }) => {
+            this.setMessage(error, 'danger')
+            this.setState({ isSubmitting: false });
+            window.scrollTo(0, 0);
+         });
    },
 
    deleteProfile() {
@@ -119,7 +123,8 @@ export default React.createClass({
 
    setMessage(text, type) {
       this.setState({ message: { text, type } });
-      _.delay(() => this.setState({ message: null }), 3000);
+      const delay = type === 'danger' ? 6000 : 3000;
+      _.delay(() => this.setState({ message: null }), delay );
    },
 
    render() {

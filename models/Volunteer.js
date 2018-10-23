@@ -4,7 +4,10 @@ const utils = require('keystone-utils');
 const transform = require('model-transform');
 const _ = require('lodash');
 const questions = require('../shared/questions.json');
-const groups = require('../shared/groups.json');
+
+const newGroups = require('../shared/groups.json');
+const oldGroups = ['captain', 'helper', 'journalist', 'medic', 'medical lab technician', 'photographer', 'rescue technician', 'technician'];
+const groups = [ ...newGroups, ...oldGroups ];
 
 const Types = keystone.Field.Types;
 
