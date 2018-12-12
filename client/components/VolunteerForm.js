@@ -153,15 +153,7 @@ export default React.createClass({
                      <FormInput name="email" type="email" defaultValue={volunteer.email} required />
                   </FormField>
                   <FormField label="Date of Birth" width="one-half">
-                     <DateInput
-                        name="birth"
-                        defaultValue={volunteer.birth}
-                        showMonthDropdown
-                        showYearDropdown
-                        dropdownMode="select"
-                        onChange={value => this.onChange({ name: 'birth', value })}
-                        required
-                     />
+                     <FormInput name="birth" type="text" defaultValue={volunteer.birth} placeholder="1948-12-10" required />
                   </FormField>
                </FormRow>
 

@@ -31,7 +31,7 @@ Volunteer.add(
       registeredAt: { type: Types.Date, default: Date.now },
       name: { type: Types.Name, initial: true, required: true, index: true },
       email: { type: Types.Email, initial: true, required: true, index: true, unique: true },
-      birth: { type: Types.Date },
+      birth: { type: String },
       phone: { type: String, width: 'short' },
       photo: { type: Types.File, storage, collapse: true },
       address: { type: Types.Textarea, collapse: true },
