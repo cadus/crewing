@@ -272,9 +272,6 @@ export default React.createClass({
                         onChange={this.setPart('cv')}
                      />
                   </FormField>
-                  <FormField label="Or CV as Text" width="two-thirds">
-                     <FormInput name="cv_text" type="text" multiline defaultValue={volunteer.cv_text} />
-                  </FormField>
                </FormRow>
 
                <hr />
