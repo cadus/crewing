@@ -12,7 +12,7 @@
   "scripts": {
     "start": "bash start.sh",
     "update-local-db": "mongo crewing --eval 'db.dropDatabase();'; ssh cadus mongodump --db crewing --archive --gzip | mongorestore --archive --gzip",
-    "update-server": "ssh cadus 'cd crewing && git pull && pm2 ls && pm2 reload crewing'",
+    "deploy": "ssh cadus 'cd crewing && git pull && pm2 ls && pm2 reload crewing'",
     "lint": "eslint .",
     "lint:fix": "eslint . --fix"
   },
